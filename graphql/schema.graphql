@@ -5,6 +5,9 @@ scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
 scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
 
 #import user.graphql
+#import auth.graphql
+#import period.graphql
+#import income.graphql
 
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
@@ -14,7 +17,7 @@ type Query {
 type Mutation {
     signup(name:String!, email:String! @rules(apply: ["email", "unique:users"]),
     password:String! @rules(apply: ["min:8", "confirmed"]), 
-    password_confirmation:String!): UserSignup
+    password_confirmation:String!): UserMessage
 }
 
 

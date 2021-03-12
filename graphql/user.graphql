@@ -8,8 +8,9 @@ type User {
     updated_at:DateTime
 }
 
-type UserSignup {
+type UserMessage {
     message:String
     user:User
+    errorId:String
 }
 

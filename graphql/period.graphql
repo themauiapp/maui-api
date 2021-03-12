@@ -1,0 +1,5 @@
+
+type Period {
+    month:String
+    year:Int
+}

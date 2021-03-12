@@ -1,0 +1,19 @@
+
+type Income {
+    user:User @belongsTo
+    period:Period @belongsTo
+    total:Float
+    remainder:Float
+    created_at:DateTime
+    updated_at:DateTime
+}
+
+extend type Mutation @guard {
+    addIncome(income:Float!): IncomeMessage
+}
+
+type IncomeMessage {
+    message:String
+    income:Income
+    errorId:String
+}
