@@ -37,7 +37,8 @@ class CreateIncomeTable extends Migration
     public function down()
     {
         Schema::table('income', function(Blueprint $table) {
-            $table->dropForeign(['user_id', 'period_id']);
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['period_id']);
         });
         Schema::dropIfExists('income');
     }

@@ -1,0 +1,15 @@
+type User {
+    id:ID
+    name:String
+    email:String
+    avatar:String
+    total_income:Float
+    created_at:DateTime
+    updated_at:DateTime
+}
+
+type UserSignup {
+    message:String
+    user:User
+}
+
