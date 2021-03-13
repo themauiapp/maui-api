@@ -27,12 +27,11 @@ class AddExpense
 
     public function __invoke($_, array $args)
     {
-        date_default_timezone_set('Africa/Lagos');
+        $user = $this->request->user();
+        date_default_timezone_set($user->timezone);
 
         $month = date('n');
         $year = date('Y');
-        $user = $this->request->user();
-        $user_id = $user->id;
         $name = strtolower($args['name']);
         $amount = $args['amount'];
 
@@ -41,7 +40,7 @@ class AddExpense
             'year' => $year
         ], []);
 
-        $income = Income::where('user_id', $user_id)
+        $income = Income::where('user_id', $user->id)
         ->where('period_id', $period->id)
         ->first();
 
@@ -54,7 +53,7 @@ class AddExpense
 
         $currentDate = date('Y-m-d').' '.'00:00:00';
         
-        $expense = Expense::where('user_id', $user_id)
+        $expense = Expense::where('user_id', $user->id)
         ->where('income_id', $income->id)
         ->where('name', $name)
         ->where('created_at', '>=', $currentDate)
@@ -77,7 +76,7 @@ class AddExpense
         }
 
         $expense = Expense::create([
-            'user_id' => $user_id,
+            'user_id' => $user->id,
             'income_id' => $income->id,
             'name' => $name,
             'amount' => $amount

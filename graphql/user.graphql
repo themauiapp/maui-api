@@ -4,6 +4,7 @@ type User {
     email:String
     avatar:String
     total_income:Float
+    timezone:String
     created_at:DateTime
     updated_at:DateTime
 }

@@ -22,16 +22,17 @@ class AddIncome
 
     public function __invoke($_, array $args)
     {
+        $user = $this->request->user();
+        date_default_timezone_set($user->timezone);
         $month = date('n');
         $year = date('Y');
-        $user_id = $this->request->user()->id;
 
         $period = Period::firstOrCreate([
             'month' => $month,
             'year' => $year
         ], []);
 
-        $income = Income::where('user_id', $user_id)
+        $income = Income::where('user_id', $user->id)
         ->where('period_id', $period->id)
         ->first();
 
@@ -43,13 +44,12 @@ class AddIncome
         }
 
         $income = Income::create([
-            'user_id' => $user_id,
+            'user_id' => $user->id,
             'period_id' => $period->id,
             'total' => $args['income'],
             'remainder' => $args['income']
         ]);
 
-        $user = $this->request->user();
         $user->total_income += $args['income'];
         $user->save();
 
