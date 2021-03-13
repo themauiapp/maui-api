@@ -1,0 +1,19 @@
+
+type Expense {
+    user:User @belongsTo
+    income:Income @belongsTo
+    name:String
+    amount:Float
+    created_at:DateTime
+    updated_at:DateTime
+}
+
+extend type Mutation @guard {
+    addExpense(name:String!, amount:Float!): ExpenseResponse
+}
+
+type ExpenseResponse {
+    message:String
+    expense:Expense
+    errorId:String
+}

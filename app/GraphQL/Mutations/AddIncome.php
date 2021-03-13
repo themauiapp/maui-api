@@ -24,14 +24,26 @@ class AddIncome
     {
         $month = date('n');
         $year = date('Y');
+        $user_id = $this->request->user()->id;
 
         $period = Period::firstOrCreate([
             'month' => $month,
             'year' => $year
         ], []);
 
+        $income = Income::where('user_id', $user_id)
+        ->where('period_id', $period->id)
+        ->first();
+
+        if($income) {
+            return [
+                'message' => 'income exists already for current period',
+                'errorId' => 'PeriodIncomeExists'
+            ];
+        }
+
         $income = Income::create([
-            'user_id' => $this->request->user()->id,
+            'user_id' => $user_id,
             'period_id' => $period->id,
             'total' => $args['income'],
             'remainder' => $args['income']

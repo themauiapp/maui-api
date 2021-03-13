@@ -1,4 +1,4 @@
 
 extend type Mutation {
-    login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserMessage
+    login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserResponse
 }

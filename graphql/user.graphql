@@ -8,7 +8,7 @@ type User {
     updated_at:DateTime
 }
 
-type UserMessage {
+type UserResponse {
     message:String
     user:User
     errorId:String
