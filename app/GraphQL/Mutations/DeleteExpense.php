@@ -25,6 +25,8 @@ class DeleteExpense
         $user = $this->request->user();
         $id = $args['id'];
 
+        date_default_timezone_set($user->timezone);
+
         try {
             $expense = Expense::findOrFail($id);
         }
