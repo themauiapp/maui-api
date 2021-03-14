@@ -12,6 +12,10 @@ extend type Mutation @guard {
     addExpense(name:String!, amount:Float!): ExpenseResponse
 }
 
+extend type Mutation @guard {
+    deleteExpense(id:Int!): ExpenseResponse
+}
+
 type ExpenseResponse {
     message:String
     expense:Expense
