@@ -12,6 +12,10 @@ extend type Mutation @guard {
     addIncome(income:Float!): IncomeResponse
 }
 
+extend type Mutation @guard {
+    updateIncome(income:Float!): IncomeResponse
+}
+
 type IncomeResponse {
     message:String
     income:Income
