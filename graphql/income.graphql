@@ -9,15 +9,23 @@ type Income {
 }
 
 extend type Mutation @guard {
-    addIncome(income:Float!): IncomeResponse
+    addIncome(income:Float!): IncomeMutation
 }
 
 extend type Mutation @guard {
-    updateIncome(income:Float!): IncomeResponse
+    updateIncome(income:Float!): IncomeMutation
 }
 
-type IncomeResponse {
+extend type Query @guard {
+    incomes(user_id:Int!): IncomeQuery
+}
+
+type IncomeMutation {
     message:String
     income:Income
     errorId:String
+}
+
+type IncomeQuery {
+    incomes:[Income]!
 }
