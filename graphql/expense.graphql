@@ -9,19 +9,34 @@ type Expense {
 }
 
 extend type Mutation @guard {
-    addExpense(name:String!, amount:Float!): ExpenseResponse
+    addExpense(name:String!, amount:Float!): ExpenseMutation
 }
 
 extend type Mutation @guard {
-    updateExpense(id:Int!, name:String, amount:Float): ExpenseResponse
+    updateExpense(id:Int!, name:String, amount:Float): ExpenseMutation
 }
 
 extend type Mutation @guard {
-    deleteExpense(id:Int!): ExpenseResponse
+    deleteExpense(id:Int!): ExpenseMutation
 }
 
-type ExpenseResponse {
+extend type Query @guard {
+    dailyExpenses(number:Int!, page:Int!, date:String!): ExpenseQuery
+}
+
+type ExpenseMutation {
     message:String
     expense:Expense
     errorId:String
+}
+
+type ExpenseQuery {
+    expenses:[Expense!]!
+    sum:Float,
+    pagination:Pagination
+}
+
+type Pagination {
+    currentPage:Float,
+    maxPages:Float
 }
