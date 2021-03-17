@@ -21,5 +21,10 @@ type Mutation {
     password_confirmation:String!, timezone:String!): UserResponse
 }
 
+type Pagination {
+    currentPage:Float,
+    maxPages:Float
+}
+
 
 

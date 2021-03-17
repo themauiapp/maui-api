@@ -27,5 +27,5 @@ type IncomeMutation {
 }
 
 type IncomeQuery {
-    incomes:[Income]!
+    incomes:[Income!]!
 }

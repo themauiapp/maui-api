@@ -28,6 +28,10 @@ extend type Query @guard {
     weeklyExpenses(number:Int!, page:Int!, date:String!): ExpenseQuery
 }
 
+extend type Query @guard {
+    incomeExpenses(income_id:Int!, number:Int!, page:Int!): ExpenseQuery
+}
+
 type ExpenseMutation {
     message:String
     expense:Expense
@@ -35,12 +39,9 @@ type ExpenseMutation {
 }
 
 type ExpenseQuery {
-    expenses:[Expense!]!
+    expenses:[Expense!]
     sum:Float,
     pagination:Pagination
-}
-
-type Pagination {
-    currentPage:Float,
-    maxPages:Float
+    message:String
+    errorId:String
 }
