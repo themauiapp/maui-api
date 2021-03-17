@@ -32,6 +32,10 @@ extend type Query @guard {
     incomeExpenses(income_id:Int!, number:Int!, page:Int!): ExpenseQuery
 }
 
+extend type Query @guard {
+    compareWeekExpenses(weekOne:String!, weekTwo:String!): CompareWeekExpenses
+}
+
 type ExpenseMutation {
     message:String
     expense:Expense
@@ -44,4 +48,11 @@ type ExpenseQuery {
     pagination:Pagination
     message:String
     errorId:String
+}
+
+type CompareWeekExpenses {
+    weeks:[[Float!]]
+    sums:[Float!]
+    startDates:[String]
+    endDates:[String]
 }
