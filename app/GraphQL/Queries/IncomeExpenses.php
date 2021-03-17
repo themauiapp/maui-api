@@ -25,9 +25,6 @@ class IncomeExpenses
     {
         $user = $this->request->user();
         $income_id = $args['income_id'];
-        $page = $args['page'];
-        $number = $args['number'];
-        $skip = ($page - 1) * $number;
 
         try {
             $income = Income::findOrFail($income_id);
@@ -48,6 +45,21 @@ class IncomeExpenses
 
         $sum = Expense::where('income_id', $income_id)
         ->sum('amount');
+
+        if(array_key_exists('all', $args) && $args['all']) {
+            $expenses = Expense::where('income_id', $income_id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+            return [
+                'expenses' => $expenses,
+                'sum' => $sum
+            ];
+        }
+
+        $page = $args['page'] ?? 1;
+        $number = $args['number'] ?? 1;
+        $skip = ($page - 1) * $number;
 
         $expenses = Expense::where('income_id', $income_id)
         ->orderBy('created_at', 'desc')

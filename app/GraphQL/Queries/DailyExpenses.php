@@ -21,16 +21,30 @@ class DailyExpenses
 
     public function __invoke($_, array $args)
     {
-        $number = $args['number'];
-        $page = $args['page'];
-        $date = $args['date'];
-        $skip = ($page - 1) * $number;
         $user = $this->request->user();
+        $date = $args['date'];
 
         $sum = Expense::where('user_id', $user->id)
         ->where('created_at', '>=', $date.' '.'00:00:00')
         ->where('created_at', '<=', $date.' '.'23:59:59')
         ->sum('amount');
+
+        if(array_key_exists('all', $args) &&  $args['all']) {
+            $expenses = Expense::where('user_id', $user->id)
+            ->where('created_at', '>=', $date.' '.'00:00:00')
+            ->where('created_at', '<=', $date.' '.'23:59:59')
+            ->sortBy('created_at', 'desc')
+            ->get();
+
+            return [
+                'expenses' => $expenses,
+                'sum' => $sum
+            ];
+        }
+
+        $number = $args['number'] ?? 1;
+        $page = $args['page'] ?? 1;
+        $skip = ($page - 1) * $number;
 
         $expenses = Expense::where('user_id', $user->id)
         ->where('created_at', '>=', $date.' '.'00:00:00')

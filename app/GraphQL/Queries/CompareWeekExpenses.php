@@ -21,6 +21,8 @@ class CompareWeekExpenses
 
     public function __invoke($_, array $args)
     {
+        date_default_timezone_set($this->user->timezone);
+        
         $weekOne = $args['weekOne'];
         $weekTwo = $args['weekTwo'];
         $weekOneExpenses = [];

@@ -23,14 +23,9 @@ class WeeklyExpenses
 
     public function __invoke($_, array $args)
     {
-        $number = $args['number'];
-        $page = $args['page'];
-        $startDate = $args['date'];
-        $skip = ($page - 1) * $number;
         $user = $this->request->user();
-
         date_default_timezone_set($user->timezone);
-
+        $startDate = $args['date'];
         $endDate = strtotime($startDate) + 604800;
         $endDate = date('Y-m-d', $endDate);
 
@@ -38,6 +33,23 @@ class WeeklyExpenses
         ->where('created_at', '>=', $startDate.' '.'00:00:00')
         ->where('created_at', '<=', $endDate.' '.'23:59:59')
         ->sum('amount');
+
+        if(array_key_exists('all', $args) && $args['all']) {
+            $expenses = Expense::where('user_id', $user->id)
+            ->where('created_at', '>=', $startDate.' '.'00:00:00')
+            ->where('created_at', '<=', $endDate.' '.'23:59:59')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+            return [
+                'expenses' => $expenses,
+                'sum' => $sum
+            ];
+        }
+
+        $number = $args['number'] ?? 1;
+        $page = $args['page'] ?? 1;
+        $skip = ($page - 1) * $number;
 
         $expenses = Expense::where('user_id', $user->id)
         ->where('created_at', '>=', $startDate.' '.'00:00:00')
