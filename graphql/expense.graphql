@@ -33,6 +33,10 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
+    searchExpenses(searchTerm:String!, number:Int, page:Int, all:Boolean): ExpenseQuery
+}
+
+extend type Query @guard {
     compareWeekExpenses(weekOne:String!, weekTwo:String!): CompareWeekExpenses
 }
 

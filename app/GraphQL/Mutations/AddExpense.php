@@ -15,8 +15,6 @@ class AddExpense
      * @param  array<string, mixed>  $args
      */
 
-    
-
     protected $user;
 
     public function __construct(Request $request)
