@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware(['auth:sanctum', 'signed'])->post('/email/verify/{id}/{hash}',
+function(EmailVerificationRequest $request) {
+    $user = $request->user();
+    date_default_timezone_set($user->timezone);
+    $request->fulfill();
+    return [
+        'message' => 'email verified successfully',
+        'user' => $user
+    ];
+})->name('verification.verify');
+
+Route::middleware(['auth:sanctum'])->post('/email/verify/send', function(Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return [
+        'message' => 'verification email resent'
+    ];
+})->name('verification.send');

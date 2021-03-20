@@ -9,7 +9,7 @@ use Illuminate\Notifications\Notifiable;
 
 use App\Models\Income;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -22,7 +22,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'activation_token',
         'timezone'
     ];
 

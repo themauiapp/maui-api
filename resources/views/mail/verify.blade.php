@@ -31,18 +31,17 @@
 					style='padding:30px;'>
 						<tr>
 							<td align='center'>
-                                <img width='40px' height='40px' src="{{ $message->embed(asset('favicon.png')) }}" />
                             </td>
 						</tr>
 						<tr>
 							<td>
-								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;'>Maui Email Verification</p>
+								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>Maui Email Verification</p>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
-									Hello {{ explode(' ', $user->name, 2)[1] }}. Welcome to Maui, the trusted tool for keeping track of your expenses. One more step to complete
+									Hello. Welcome to Maui, the trusted tool for keeping track of your expenses. One more step to complete
 									your registration. Click the link below to verify your email.
 								</div>
 							</td>
@@ -50,7 +49,7 @@
 						<tr>
 							<td>
 								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}email/verify/{{ $user->activation_token }}' style='color:#000; font-size:1em;'>
+									<a href='{{ config("app.client_url") }}email/verify/{{ $url }}' style='color:#000; font-size:1em;'>
 										{{ config('app.client_url') }}email/verify
 									</a>									
 								</div>
@@ -67,7 +66,7 @@
 							<td>
 								<div style='margin-top:12px;'>
                                     <p style='margin:0; color:#000; font-size:1em; text-decoration:none;'>
-                                        {{ config("app.client_url") }}email/verify/{{ $user->activation_token }}
+                                        {{ config("app.client_url") }}email/verify/{{ $url }}
                                     </p>
 								</div>
 							</td>

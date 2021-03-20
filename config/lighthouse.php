@@ -30,7 +30,6 @@ return [
          */
         'middleware' => [
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-
             \Nuwave\Lighthouse\Support\Http\Middleware\AcceptJson::class,
 
             // Logs every incoming GraphQL query.

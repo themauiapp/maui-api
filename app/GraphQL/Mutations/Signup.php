@@ -3,9 +3,9 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
-use App\Mail\VerifyEmail;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class Signup
 {
@@ -22,16 +22,16 @@ class Signup
             ];
         }
 
-        $token = bin2hex(openssl_random_pseudo_bytes(50));
         $user = User::create([
             'name' => $args['name'],
             'email' => $args['email'],
             'password' => Hash::make($args['password']),
-            'activation_token' => $token,
             'timezone' => $args['timezone'],
         ]);
 
-        // Mail::to($user)->send(new VerifyEmail($user));
+        Auth::login($user, true);
+
+        event(new Registered($user));
 
         return [
             'message' => 'user created successfully',
