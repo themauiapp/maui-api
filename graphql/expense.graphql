@@ -9,7 +9,7 @@ type Expense {
 }
 
 extend type Mutation @guard {
-    addExpense(name:String!, amount:Float!): ExpenseMutation
+    addExpense(name:String!, amount:Float!, date:String): ExpenseMutation
 }
 
 extend type Mutation @guard {

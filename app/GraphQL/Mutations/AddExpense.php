@@ -17,18 +17,17 @@ class AddExpense
 
     
 
-    protected $request;
+    protected $user;
 
     public function __construct(Request $request)
     {
-        $this->request = $request;
+        $this->user = $request->user();
     }
 
 
     public function __invoke($_, array $args)
     {
-        $user = $this->request->user();
-        date_default_timezone_set($user->timezone);
+        date_default_timezone_set($this->user->timezone);
 
         $month = date('n');
         $year = date('Y');
@@ -40,7 +39,11 @@ class AddExpense
             'year' => $year
         ], []);
 
-        $income = Income::where('user_id', $user->id)
+        if($args['date']) {
+            return $this->addToDate($name, $amount, $args['date']);
+        }
+
+        $income = Income::where('user_id', $this->user->id)
         ->where('period_id', $period->id)
         ->first();
 
@@ -53,7 +56,7 @@ class AddExpense
 
         $currentDate = date('Y-m-d').' '.'00:00:00';
         
-        $expense = Expense::where('user_id', $user->id)
+        $expense = Expense::where('user_id', $this->user->id)
         ->where('income_id', $income->id)
         ->where('name', $name)
         ->where('created_at', '>=', $currentDate)
@@ -61,13 +64,13 @@ class AddExpense
 
         if($expense) {
             $income->remainder += $expense->amount;
-            $user->total_income += $expense->amount;
+            $this->user->total_income += $expense->amount;
             $expense->amount += $amount;
             $expense->save();
             $income->remainder -= $expense->amount;
-            $user->total_income -= $expense->amount;
+            $this->user->total_income -= $expense->amount;
             $income->save();
-            $user->save();
+            $this->user->save();
 
             return [
                 'message' => 'expense recorded successfully',
@@ -76,7 +79,7 @@ class AddExpense
         }
 
         $expense = Expense::create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'income_id' => $income->id,
             'name' => $name,
             'amount' => $amount
@@ -84,8 +87,63 @@ class AddExpense
 
         $income->remainder -= $amount;
         $income->save();
-        $user->total_income -= $amount;
-        $user->save();
+        $this->user->total_income -= $amount;
+        $this->user->save();
+
+        return [
+            'message' => 'expense recorded successfully',
+            'expense' => $expense
+        ];
+    }
+
+    public function addToDate($name, $amount, $date)
+    {
+        $date = strtotime($date);
+        $month = date('n', $date);
+        $year = date('Y', $date);
+
+        $period = Period::where('month', $month)
+        ->where('year', $year)
+        ->first();
+
+        if(!$period) {
+            return [
+                'message' => 'period does not exist',
+                'errorId' => 'PeriodDoesNotExist'
+            ];
+        }
+
+        if(date('d', $date) > date('d')) {
+            return [
+                'message' => 'cannot add income for days ahead',
+                'errorId' => 'InvalidDate'
+            ];   
+        }
+
+        $income = Income::where('period_id', $period->id)
+        ->where('user_id', $this->user->id)
+        ->first();
+
+        if(!$income) {
+            return [
+                'message' => 'no income exists for period',
+                'errorId' => 'NoPeriodIncomeExists'
+            ];
+        }
+
+        $expense = Expense::create([
+            'user_id' => $this->user->id,
+            'income_id' => $income->id,
+            'name' => $name,
+            'amount' => $amount,
+            'created_at' => date('Y-m-d', $date).' '.'23:59:59',
+            'updated_at' => date('Y-m-d', $date).' '.'23:59:59'
+        ]);
+
+        $income->remainder -= $amount;
+        $income->save();
+        $this->user->total_income -= $amount;
+        $this->user->save();
 
         return [
             'message' => 'expense recorded successfully',
