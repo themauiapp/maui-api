@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+use App\Notifications\ResetPasswordNotification;
 use App\Models\Income;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -43,6 +44,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'total_income' => 'float'
     ];
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
     public function incomes() {
         return $this->hasMany(Income::class);

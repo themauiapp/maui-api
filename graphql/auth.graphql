@@ -1,5 +1,20 @@
 
 extend type Mutation {
     login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserResponse
+}
+
+extend type Mutation {
     logout(id:Int!): UserResponse
 }
+
+extend type Mutation {
+    resetPasswordEmail(email:String! @rules(apply:["email"])): Response
+}
+
+extend type Mutation {
+    resetPassword(email:String! @rules(apply: ["email"]),
+    password:String! @rules(apply: ["min:8", "confirmed"])
+    password_confirmation:String!,
+    token:String!): Response
+}
+

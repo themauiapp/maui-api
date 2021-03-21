@@ -37,7 +37,7 @@ class AddExpense
             'year' => $year
         ], []);
 
-        if($args['date']) {
+        if(array_key_exists('date', $args)) {
             return $this->addToDate($name, $amount, $args['date']);
         }
 
