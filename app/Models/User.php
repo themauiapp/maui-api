@@ -20,7 +20,8 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'timezone'
@@ -35,6 +36,10 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
     ];
 
+    protected $appends = [
+        'name',
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -44,6 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'total_income' => 'float'
     ];
+
+    public function getNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
 
     public function sendPasswordResetNotification($token)
     {
