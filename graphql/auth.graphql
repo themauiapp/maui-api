@@ -22,4 +22,12 @@ extend type Mutation @guard {
     verifyResetEmail(password:String! @rules(apply: ["min:8"])): Response
 }
 
+extend type Mutation @guard {
+    sendChangeEmail(email:String! @rules(apply: ["email"]),
+    token:String! @rules(apply: ["min:50"])): Response
+}
 
+extend type Mutation @guard {
+    resetEmail(email:String! @rules(apply: ["email"]),
+    token:String! @rules(apply: ["min:50"])): UserResponse
+}

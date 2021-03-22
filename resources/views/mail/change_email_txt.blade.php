@@ -1,7 +1,7 @@
-Hello {{ $name }}. A request was made to change the email address associated
-with your {{ config('app.name') }} account. Copy and paste this link in your browser to continue the process. 
+Hello. A request was made to change the email address associated with {{ $name }}s account on the Maui platform
+to {{ $email }}. To continue with this process, click the link below. 
 
-{{ config('app.client_url') }}/email/change/{{ $token }}
+{{ config('app.client_url') }}/email/confirm/{{ $token }}
 
 Regards,
 {{ config('app.name') }}

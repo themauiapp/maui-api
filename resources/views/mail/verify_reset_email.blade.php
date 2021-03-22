@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{ config('app.name') }} Email Change</title>
+		<title>{{ config('app.name') }} Email Change Verification</title>
 		<style type='text/css'>
 			@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
             
@@ -35,22 +35,22 @@
 						</tr>
 						<tr>
 							<td>
-								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>{{ config('app.name') }} Email Change</p>
+								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>{{ config('app.name') }} Password Reset</p>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
-									Hello. A request was made to change the email address associated with {{ $name }}'s account on the Maui platform
-                                    to <b>{{ $email }}</b>. To continue with this process, click the link below.
+									Hello {{ $name }}. A request was made to change the email address associated with your {{ config('app.name') }} account. To proceed
+                                    with this, kindly click the link below.
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}' style='color:#000; font-size:1em;'>
-										{{ config('app.client_url') }}email/confirm
+									<a href='{{ config("app.client_url") }}email/change/{{ $token }}' style='color:#000; font-size:1em;'>
+										{{ config('app.client_url') }}email/change
 									</a>									
 								</div>
 							</td>
@@ -66,7 +66,7 @@
 							<td>
 								<div style='margin-top:12px;'>
                                     <p style='margin:0; color:#000; font-size:1em; text-decoration:none;'>
-                                        {{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}
+                                        {{ config("app.client_url") }}email/change/{{ $token }}
                                     </p>
 								</div>
 							</td>

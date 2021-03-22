@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ChangeEmailNotification extends Notification
+class VerifyResetEmailNotification extends Notification
 {
     use Queueable;
 
@@ -18,13 +18,11 @@ class ChangeEmailNotification extends Notification
      */
 
     protected $name;
-    protected $email;
     protected $token;
 
-    public function __construct($name, $email, $token)
+    public function __construct($name, $token)
     {
         $this->name = $name;
-        $this->email = $email;
         $this->token = $token;
     }
 
@@ -48,9 +46,8 @@ class ChangeEmailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Change your Email')
-                    ->view(['mail.change_email', 'mail.change_email_txt'],
-                     ['name' => $this->name, 'email' => $this->email, 'token' => $this->token]);
+                    ->subject('Verify your Email Change')
+                    ->view(['mail.verify_reset_email', 'mail.verify_reset_email_txt'], ['name' => $this->name, 'token' => $this->token]);
     }
 
     /**

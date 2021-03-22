@@ -15,6 +15,7 @@ class ResetPassword
     public function __invoke($_, array $args)
     {
         Password::reset($args, function($user, $password) {
+            date_default_timezone_set($user->timezone);
             $user->forceFill([
                 'password' => Hash::make($password)
             ]);

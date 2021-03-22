@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\EmailReset;
-use App\Events\ChangeEmail;
+use App\Events\VerifyResetEmail as VerifyResetEmailEvent;
 
 class VerifyResetEmail
 {
@@ -36,11 +36,11 @@ class VerifyResetEmail
                 'expires_at' => $expires_at
             ]);
 
-            event(new ChangeEmail($user, $token)); 
+            event(new VerifyResetEmailEvent($user, $token)); 
         }
 
         return [
-            'message' => 'reset email mail sent successfully',
+            'message' => 'verify reset email sent successfully',
         ];
     }
 }
