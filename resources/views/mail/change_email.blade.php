@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{ config('app.name') }} Password Reset</title>
+		<title>{{ config('app.name') }} Email Change</title>
 		<style type='text/css'>
 			@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
             
@@ -41,16 +41,16 @@
 						<tr>
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
-									Hey there. A password reset request was made on your account. Click this link to continue the process. 
-                                    Note that the link expires in 30 minutes.
+									Hello {{ $name }}. A request was made to change the email address associated with your {{ config('app.name') }} account. To proceed
+                                    with this, kindly click the link below.
 								</div>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}password/reset/{{ $token }}' style='color:#000; font-size:1em;'>
-										{{ config('app.client_url') }}password/reset
+									<a href='{{ config("app.client_url") }}email/change/{{ $token }}' style='color:#000; font-size:1em;'>
+										{{ config('app.client_url') }}email/change
 									</a>									
 								</div>
 							</td>
@@ -66,7 +66,7 @@
 							<td>
 								<div style='margin-top:12px;'>
                                     <p style='margin:0; color:#000; font-size:1em; text-decoration:none;'>
-                                        {{ config("app.client_url") }}password/reset/{{ $token }}
+                                        {{ config("app.client_url") }}email/change/{{ $token }}
                                     </p>
 								</div>
 							</td>

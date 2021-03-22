@@ -18,3 +18,8 @@ extend type Mutation {
     token:String!): Response
 }
 
+extend type Mutation @guard {
+    verifyResetEmail(password:String! @rules(apply: ["min:8"])): Response
+}
+
+

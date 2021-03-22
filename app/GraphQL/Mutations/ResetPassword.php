@@ -14,7 +14,7 @@ class ResetPassword
 
     public function __invoke($_, array $args)
     {
-        $status = Password::reset($args, function($user, $password) {
+        Password::reset($args, function($user, $password) {
             $user->forceFill([
                 'password' => Hash::make($password)
             ]);

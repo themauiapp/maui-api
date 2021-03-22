@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Maui Email Verification</title>
+		<title>{{ config('app.name') }} Email Verification</title>
 		<style type='text/css'>
 			@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
             
@@ -35,13 +35,13 @@
 						</tr>
 						<tr>
 							<td>
-								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>Maui Email Verification</p>
+								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>{{ config('app.name') }} Email Verification</p>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
-									Hello. Welcome to Maui, the trusted tool for keeping track of your expenses. One more step to complete
+									Hello. Welcome to {{ config('app.name') }}, the trusted tool for keeping track of your expenses. One more step to complete
 									your registration. Click the link below to verify your email.
 								</div>
 							</td>
@@ -75,7 +75,7 @@
                             <td>
                                 <div style='margin-top:15px'>
                                     <p style='margin:0;'>Regards,</p>
-                                    <p style='margin:4px 0 0 0;'>Maui</p>
+                                    <p style='margin:4px 0 0 0;'>{{ config('app.name') }}</p>
                                 </div>
                             </td>
                         </tr>
