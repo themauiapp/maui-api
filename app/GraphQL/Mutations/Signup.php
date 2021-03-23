@@ -23,7 +23,8 @@ class Signup
         }
 
         $user = User::create([
-            'name' => $args['name'],
+            'first_name' => $args['first_name'],
+            'last_name' => $args['last_name'],
             'email' => $args['email'],
             'password' => Hash::make($args['password']),
             'timezone' => $args['timezone'],

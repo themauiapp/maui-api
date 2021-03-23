@@ -2,11 +2,16 @@ type User {
     id:ID
     name:String
     email:String
+    email_verified_at:DateTime
     avatar:String
     total_income:Float
     timezone:String
     created_at:DateTime
     updated_at:DateTime
+}
+
+extend type Mutation @guard {
+    updateUser(first_name:String, last_name:String, timezone:String, password:String @rules(apply: ["min:8"])): UserResponse
 }
 
 type UserResponse {
