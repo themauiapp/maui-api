@@ -21,11 +21,11 @@ extend type Mutation @guard {
 }
 
 extend type Query @guard {
-    dailyExpenses(number:Int, page:Int, date:String!, all:Boolean): ExpenseQuery
+    dailyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
 }
 
 extend type Query @guard {
-    weeklyExpenses(number:Int, page:Int, date:String!, all:Boolean): ExpenseQuery
+    weeklyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
 }
 
 extend type Query @guard {
@@ -37,7 +37,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    compareWeekExpenses(weekOne:String!, weekTwo:String!): CompareWeekExpenses
+    compareWeekExpenses(weekOne:String! @rules(apply: ["date_format:Y-m-d"]), weekTwo:String! @rules(apply: ["date_format:Y-m-d"])): CompareWeekExpenses
 }
 
 type ExpenseMutation {
