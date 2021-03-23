@@ -25,7 +25,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    weeklyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
+    weeklyExpenses(number:Int, page:Int, days:Int , date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
 }
 
 extend type Query @guard {

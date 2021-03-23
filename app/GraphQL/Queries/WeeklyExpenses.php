@@ -26,7 +26,8 @@ class WeeklyExpenses
         $user = $this->request->user();
         date_default_timezone_set($user->timezone);
         $startDate = $args['date'];
-        $endDate = strtotime($startDate) + 604800;
+        $days = $args['days'] ?? 7;
+        $endDate = strtotime($startDate) + ($days * 86400);
         $endDate = date('Y-m-d', $endDate);
 
         $sum = Expense::where('user_id', $user->id)
