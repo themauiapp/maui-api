@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyResetEmailNotification;
 use App\Notifications\ChangeEmailNotification;
+use App\Notifications\EmailChangedNotification;
 use App\Models\Income;
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -70,6 +71,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendChangeEmailNotification($token)
     {
         $this->notify(new ChangeEmailNotification($this->name, $this->email, $token));
+    }
+
+    public function sendEmailChangedNotification()
+    {
+        $this->notify(new EmailChangedNotification($this->last_name, $this->email));
     }
 
     public function incomes() {

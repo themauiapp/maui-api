@@ -3,7 +3,6 @@
 namespace App\GraphQL\Mutations;
 
 use Illuminate\Support\Facades\Password;
-
 class ResetPasswordEmail
 {
     /**

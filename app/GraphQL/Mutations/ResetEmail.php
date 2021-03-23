@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use Illuminate\Http\Request;
 use App\Models\EmailReset;
 use App\Models\User;
-
+use App\Events\EmailChanged;
 class ResetEmail
 {
     /**
@@ -41,7 +41,7 @@ class ResetEmail
         ->first();
 
         if(!$reset) {
-            $reset->delete();
+            EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'invalid email reset token',
                 'errorId' => 'InvalidResetToken'
@@ -49,7 +49,7 @@ class ResetEmail
         }
 
         if(time() > $reset->expires_at) {
-            $reset->delete();
+            EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'expired email reset token',
                 'errorId' => 'ExpiredResetToken'
@@ -59,6 +59,7 @@ class ResetEmail
         $reset->delete();
         $user->email = $email;
         $user->save();
+        event(new EmailChanged($user));
         return [
             'message' => 'user email changed successfully',
             'user' => $user

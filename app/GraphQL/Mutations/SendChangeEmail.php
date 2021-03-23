@@ -42,7 +42,7 @@ class SendChangeEmail
         ->first();
 
         if(!$reset) {
-            $reset->delete();
+            EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'invalid email reset token',
                 'errorId' => 'InvalidResetToken'
@@ -50,7 +50,7 @@ class SendChangeEmail
         }
 
         if(time() > $reset->expires_at) {
-            $reset->delete();
+            EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'expired email reset token',
                 'errorId' => 'ExpiredResetToken'

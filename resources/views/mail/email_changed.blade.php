@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>{{ config('app.name') }} Email Change</title>
+		<title>{{ config('app.name') }} Email Changed</title>
 		<style type='text/css'>
 			@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
             
@@ -35,42 +35,17 @@
 						</tr>
 						<tr>
 							<td>
-								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>{{ config('app.name') }} Email Change</p>
+								<p style='margin:15px 0 12px 0;font-weight:bold; text-align:center;font-size:16px;'>{{ config('app.name') }} Email Changed</p>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
-									Hello. A request was made to change the email address associated with {{ $name }}'s account on the Maui platform
-                                    to this address <b>{{ $email }}</b>. To continue with this process, click the link below.
+									Hey {{ $name }}. Your email has been changed successfully. From now on {{ $email }} is the email address associated with your 
+                                    {{ config('app.name') }} account. If you have any more updates you would like to make, simply visit the settings page in the Maui app.
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td>
-								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}' style='color:#000; font-size:1em;'>
-										{{ config('app.client_url') }}email/confirm
-									</a>									
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div style='margin-top:10px;'>
-									Should you be unable to use the link above, simply copy and paste this link in your browser to continue the process.
-								</div>
-							</td>
-                        </tr>
-                        <tr>
-							<td>
-								<div style='margin-top:12px;'>
-                                    <p style='margin:0; color:#000; font-size:1em; text-decoration:none;'>
-                                        {{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}
-                                    </p>
-								</div>
-							</td>
-                        </tr>
                         <tr>
                             <td>
                                 <div style='margin-top:15px'>
