@@ -25,10 +25,3 @@ function(EmailVerificationRequest $request) {
         'user' => $user
     ];
 })->name('verification.verify');
-
-Route::middleware(['auth:sanctum'])->post('/email/verify/send', function(Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return [
-        'message' => 'verification email resent'
-    ];
-})->name('verification.send');

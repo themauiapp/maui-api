@@ -3,12 +3,15 @@
 namespace App\GraphQL\Mutations;
 
 use App\Models\User;
+use App\Traits\ValidateTimezone;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class Signup
 {
+    use ValidateTimezone;
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -38,14 +41,5 @@ class Signup
             'message' => 'user created successfully',
             'user' => $user
         ];
-    }
-
-    public function validateTimezone($timezone) {
-        $fileName = 'timezones.json';
-        $fileHandler = fopen($fileName, 'r') or die('unable to open file');
-        $data = fread($fileHandler, filesize($fileName));
-        $timezones = json_decode($data, true);
-        fclose($fileHandler);
-        return in_array($timezone, $timezones);
     }
 }

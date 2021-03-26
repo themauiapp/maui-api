@@ -1,10 +1,26 @@
 
+type SocialLogin {
+    redirect_url: String
+}
+
 extend type Mutation {
     login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserResponse
 }
 
 extend type Mutation {
-    logout(id:Int!): UserResponse
+    googleLogin(id:ID): SocialLogin
+}
+
+extend type Mutation {
+    verifyGoogleLogin(timezone:String!): UserResponse
+}
+
+extend type Mutation @guard {
+    resendVerificationEmail(id:ID): Response
+}
+
+extend type Mutation @guard {
+    logout(id:ID!): UserResponse
 }
 
 extend type Mutation {

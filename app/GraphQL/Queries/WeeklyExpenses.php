@@ -4,8 +4,6 @@ namespace App\GraphQL\Queries;
 
 use Illuminate\Http\Request;
 use App\Models\Expense;
-use DateTime;
-use PhpParser\Node\Expr\New_;
 
 class WeeklyExpenses
 {

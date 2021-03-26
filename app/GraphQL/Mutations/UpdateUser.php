@@ -2,11 +2,12 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Traits\ValidateTimezone;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-
 class UpdateUser
 {
+    use ValidateTimezone;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -42,14 +43,5 @@ class UpdateUser
             'message' => 'user updated successfully',
             'user' => $user
         ];
-    }
-
-    public function validateTimezone($timezone) {
-        $fileName = 'timezones.json';
-        $fileHandler = fopen($fileName, 'r') or die('unable to open file');
-        $data = fread($fileHandler, filesize($fileName));
-        $timezones = json_decode($data, true);
-        fclose($fileHandler);
-        return in_array($timezone, $timezones);
     }
 }
