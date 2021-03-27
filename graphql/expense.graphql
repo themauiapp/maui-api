@@ -21,6 +21,10 @@ extend type Mutation @guard {
 }
 
 extend type Query @guard {
+    expenseStats(name:String!): ExpenseStats
+}
+
+extend type Query @guard {
     dailyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
 }
 
@@ -52,6 +56,15 @@ type ExpenseQuery {
     pagination:Pagination
     message:String
     errorId:String
+}
+
+type ExpenseStats {
+    name: String
+    total: Float
+    first_recorded: DateTime
+    last_recorded: DateTime
+    errorId: String
+    message: String
 }
 
 type CompareWeekExpenses {
