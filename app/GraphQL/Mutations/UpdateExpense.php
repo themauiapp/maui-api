@@ -13,19 +13,18 @@ class UpdateExpense
      * @param  array<string, mixed>  $args
      */
 
-    protected $request;
+    protected $user, $income;
 
     public function __construct(Request $request) {
-        $this->request = $request;
+        $this->user = $request->user();
     }   
 
     public function __invoke($_, array $args)
     {
-        $user = $this->request->user();
         $id = $args['id'];
         $name = array_key_exists('name', $args) ? strtolower($args['name']) : NULL;
         $amount = array_key_exists('amount', $args) ? $args['amount'] : NULL;
-        date_default_timezone_set($user->timezone);
+        date_default_timezone_set($this->user->timezone);
 
         try {
             $expense = Expense::findOrFail($id);
@@ -37,21 +36,21 @@ class UpdateExpense
             ];
         }
 
-        if($expense->user->id !== $user->id) {
+        if($expense->user->id !== $this->user->id) {
             return [
                 'message' => 'you do not have permission',
                 'errorId' => 'Unauthorized'
             ];
         }
 
-        $income = $expense->income;
-        $uniqueExpense = UniqueExpense::where('user_id', $user->id)
+        $this->income = $expense->income;
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
         ->where('name', $expense->name)
         ->first();
 
         if($name) {
             $expenseDateStart = explode(' ', $expense->created_at, 2)[0];
-            $namedExpense = Expense::where('user_id', $user->id)
+            $namedExpense = Expense::where('user_id', $this->user->id)
             ->where('name', $name)
             ->where('created_at', '>=', $expenseDateStart.' '.'00:00:00')
             ->where('created_at', '<=', $expenseDateStart.' '.'23:59:59')
@@ -59,152 +58,190 @@ class UpdateExpense
             ->first();
 
             if($namedExpense && !$amount) {
-                $oldUniqueExpense = $uniqueExpense;
-                if($oldUniqueExpense->total === $expense->amount) {
-                    $oldUniqueExpense->delete();
-                }
-                else {
-                    $oldUniqueExpense->total -= $expense->amount;
-                    $oldUniqueExpense->save();
-                }
-                $uniqueExpense = UniqueExpense::where('user_id', $user->id)
-                ->where('name', $namedExpense->name)
-                ->first();
-                $namedExpense->amount += $expense->amount;
-                $uniqueExpense->total += $expense->amount;
-                $namedExpense->save();
-                $uniqueExpense->save();
-                $expense->delete();
-                return [
-                    'message' => 'expense updated successfully',
-                    'expense' => $namedExpense,
-                ];
+                return $this->updateNamedExpense($expense, $namedExpense, $uniqueExpense);
             }
 
             if($namedExpense && $amount) {
-                $oldUniqueExpense = $uniqueExpense;
-                if($oldUniqueExpense->total === $expense->amount) {
-                    $oldUniqueExpense->delete();
-                }
-                else {
-                    $oldUniqueExpense->total -= $expense->amount;
-                    $oldUniqueExpense->save();
-                }
-                $uniqueExpense = UniqueExpense::where('user_id', $user->id)
-                ->where('name', $namedExpense->name)
-                ->first();
-                $income->remainder += $expense->amount;
-                $user->total_income += $expense->amount;
-                $uniqueExpense->total += $amount;
-                $namedExpense->amount += $amount;
-                $income->remainder -= $amount;
-                $user->total_income -= $amount;
-                $uniqueExpense->save();
-                $income->save();
-                $user->save();
-                $namedExpense->save();
-                $expense->delete();
-                return [
-                    'message' => 'expense updated successfully',
-                    'expense' => $namedExpense,
-                ];
+                return $this->updateNamedExpenseAndAmount($expense, $namedExpense, $uniqueExpense, $amount);   
             }
 
             if(!$namedExpense && !$amount) {
-                $oldUniqueExpense = $uniqueExpense;
-                if($oldUniqueExpense->total === $expense->amount) {
-                    $oldUniqueExpense->delete();
-                }
-                else {
-                    $oldUniqueExpense->total -= $expense->amount;
-                    $oldUniqueExpense->save();
-                }
-                $uniqueExpense = UniqueExpense::where('user_id', $user->id)
-                ->where('name', $name)
-                ->first();
-
-                if(!$uniqueExpense) {
-                    UniqueExpense::create([
-                        'user_id' => $user->id,
-                        'name' => $name,
-                        'total' => $expense->amount
-                    ]);
-                }
-                else {
-                    $uniqueExpense->total += $expense->amount;
-                    $uniqueExpense->save();
-                }
-                $expense->name = $name;
-                $expense->save();
-                return [
-                    'message' => 'expense updated successfully',
-                    'expense' => $expense,
-                ];
+                return $this->updateExpenseName($expense, $uniqueExpense, $name);
             }
 
             if(!$namedExpense && $amount) {
-                $oldUniqueExpense = $uniqueExpense;
-                if($oldUniqueExpense->total === $expense->amount) {
-                    $oldUniqueExpense->delete();
-                }
-                else {
-                    $oldUniqueExpense->total -= $expense->amount;
-                    $oldUniqueExpense->save();
-                }
-                $uniqueExpense = UniqueExpense::where('user_id', $user->id)
-                ->where('name', $name)
-                ->first();
-
-                if(!$uniqueExpense) {
-                    UniqueExpense::create([
-                        'user_id' => $user->id,
-                        'name' => $name,
-                        'total' => $amount
-                    ]);
-                }
-                else {
-                    $uniqueExpense->total += $amount;
-                    $uniqueExpense->save();
-                }
-                $income->remainder += $expense->amount;
-                $user->total_income += $expense->amount;
-                $uniqueExpense->total += $expense->amount;
-                $uniqueExpense->name = $name;
-                $expense->name = $name;
-                $expense->amount = $amount;
-                $income->remainder -= $amount;
-                $user->total_income -= $amount;
-                $uniqueExpense->total -= $amount;
-                $income->save();
-                $user->save();
-                $expense->save();
-                $uniqueExpense->save();
-                return [
-                    'message' => 'expense updated successfully',
-                    'expense' => $expense,
-                ];
+                return $this->updateExpenseNameAndAmount($expense, $uniqueExpense, $name, $amount);
             }
         }
         else if($amount) {
-            $income->remainder += $expense->amount;
-            $user->total_income += $expense->amount;
-            $uniqueExpense->total += $expense->amount;
-            $expense->amount = $amount;
-            $income->remainder -= $amount;
-            $user->total_income -= $amount;
-            $uniqueExpense->total -= $amount;
-            $income->save();
-            $user->save();
-            $uniqueExpense->save();
-            $expense->save();
-            return [
-                'message' => 'expense updated successfully',
-                'expense' => $expense,
-            ];
+            return $this->updateExpenseAmount($expense, $uniqueExpense, $amount);
         }
 
         return [
             'message' => 'nothing to update',
+            'expense' => $expense,
+        ];
+    }
+
+    public function updateNamedExpense($expense, $namedExpense, $uniqueExpense) 
+    {
+        $oldUniqueExpense = $uniqueExpense;
+        
+        if($oldUniqueExpense->total === $expense->amount) {
+            $oldUniqueExpense->delete();
+        }
+        else {
+            $oldUniqueExpense->total -= $expense->amount;
+            $oldUniqueExpense->save();
+        }
+
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
+        ->where('name', $namedExpense->name)
+        ->first();
+
+        $namedExpense->amount += $expense->amount;
+        $uniqueExpense->total += $expense->amount;
+        $namedExpense->save();
+        $uniqueExpense->save();
+        $expense->delete();
+        
+        return [
+            'message' => 'expense updated successfully',
+            'expense' => $namedExpense,
+        ];
+    }
+
+    public function updateNamedExpenseAndAmount($expense, $namedExpense, $uniqueExpense, $amount)
+    {
+        $oldUniqueExpense = $uniqueExpense;
+        
+        if($oldUniqueExpense->total === $expense->amount) {
+            $oldUniqueExpense->delete();
+        }
+        else {
+            $oldUniqueExpense->total -= $expense->amount;
+            $oldUniqueExpense->save();
+        }
+
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
+        ->where('name', $namedExpense->name)
+        ->first();
+
+        $this->income->remainder += $expense->amount;
+        $this->user->total_income += $expense->amount;
+        $uniqueExpense->total += $amount;
+        $namedExpense->amount += $amount;
+        $this->income->remainder -= $amount;
+        $this->user->total_income -= $amount;
+        $uniqueExpense->save();
+        $this->income->save();
+        $this->user->save();
+        $namedExpense->save();
+        $expense->delete();
+        
+        return [
+            'message' => 'expense updated successfully',
+            'expense' => $namedExpense,
+        ];
+    }
+
+    public function updateExpenseName($expense, $uniqueExpense, $name)
+    {
+        $oldUniqueExpense = $uniqueExpense;
+        
+        if($oldUniqueExpense->total === $expense->amount) {
+            $oldUniqueExpense->delete();
+        }
+        else {
+            $oldUniqueExpense->total -= $expense->amount;
+            $oldUniqueExpense->save();
+        }
+
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
+        ->where('name', $name)
+        ->first();
+
+        if(!$uniqueExpense) {
+            UniqueExpense::create([
+                'user_id' => $this->user->id,
+                'name' => $name,
+                'total' => $expense->amount
+            ]);
+        }
+        else {
+            $uniqueExpense->total += $expense->amount;
+            $uniqueExpense->save();
+        }
+
+        $expense->name = $name;
+        $expense->save();
+        
+        return [
+            'message' => 'expense updated successfully',
+            'expense' => $expense,
+        ];
+    }
+
+    public function updateExpenseNameAndAmount($expense, $uniqueExpense, $name, $amount)
+    {
+        $oldUniqueExpense = $uniqueExpense;
+        
+        if($oldUniqueExpense->total === $expense->amount) {
+            $oldUniqueExpense->delete();
+        }
+        else {
+            $oldUniqueExpense->total -= $expense->amount;
+            $oldUniqueExpense->save();
+        }
+
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
+        ->where('name', $name)
+        ->first();
+
+        if(!$uniqueExpense) {
+            UniqueExpense::create([
+                'user_id' => $this->user->id,
+                'name' => $name,
+                'total' => $amount
+            ]);
+        }
+        else {
+            $uniqueExpense->total += $amount;
+            $uniqueExpense->save();
+        }
+
+        $this->income->remainder += $expense->amount;
+        $this->user->total_income += $expense->amount;
+        $expense->name = $name;
+        $expense->amount = $amount;
+        $this->income->remainder -= $amount;
+        $this->user->total_income -= $amount;
+        $this->income->save();
+        $this->user->save();
+        $expense->save();
+        
+        return [
+            'message' => 'expense updated successfully',
+            'expense' => $expense,
+        ];
+    }
+
+    public function updateExpenseAmount($expense, $uniqueExpense, $amount)
+    {
+        $this->income->remainder += $expense->amount;
+        $this->user->total_income += $expense->amount;
+        $uniqueExpense->total += $expense->amount;
+        $expense->amount = $amount;
+        $this->income->remainder -= $amount;
+        $this->user->total_income -= $amount;
+        $uniqueExpense->total -= $amount;
+        $this->income->save();
+        $this->user->save();
+        $uniqueExpense->save();
+        $expense->save();
+        
+        return [
+            'message' => 'expense updated successfully',
             'expense' => $expense,
         ];
     }
