@@ -13,11 +13,11 @@ extend type Mutation @guard {
 }
 
 extend type Mutation @guard {
-    updateExpense(id:Int!, name:String, amount:Float): ExpenseMutation
+    updateExpense(id:ID!, name:String, amount:Float): ExpenseMutation
 }
 
 extend type Mutation @guard {
-    deleteExpense(id:Int!): ExpenseMutation
+    deleteExpense(id:ID!): ExpenseMutation
 }
 
 extend type Query @guard {

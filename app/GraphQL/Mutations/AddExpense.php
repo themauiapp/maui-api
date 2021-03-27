@@ -5,6 +5,7 @@ namespace App\GraphQL\Mutations;
 use Illuminate\Http\Request;
 
 use App\Models\Expense;
+use App\Models\UniqueExpense;
 use App\Models\Period;
 use App\Models\Income;
 
@@ -70,6 +71,8 @@ class AddExpense
             $income->save();
             $this->user->save();
 
+            $this->recordUniqueExpense($name, $amount);
+
             return [
                 'message' => 'expense recorded successfully',
                 'expense' => $expense
@@ -87,6 +90,8 @@ class AddExpense
         $income->save();
         $this->user->total_income -= $amount;
         $this->user->save();
+
+        $this->recordUniqueExpense($name, $amount);
 
         return [
             'message' => 'expense recorded successfully',
@@ -129,6 +134,30 @@ class AddExpense
             ];
         }
 
+        $expense = Expense::where('user_id', $this->user->id)
+        ->where('name', $name)
+        ->where('created_at', '>=', date('Y-m-d', $date).' '.'00:00:00')
+        ->where('created_at', '<=', date('Y-m-d', $date).' '.'23:59:59')
+        ->first();
+
+        if($expense) {
+            $income->remainder += $expense->amount;
+            $this->user->total_income += $expense->amount;
+            $expense->amount += $amount;
+            $expense->save();
+            $income->remainder -= $expense->amount;
+            $this->user->total_income -= $expense->amount;
+            $income->save();
+            $this->user->save();
+
+            $this->recordUniqueExpense($name, $amount);
+
+            return [
+                'message' => 'expense recorded successfully',
+                'expense' => $expense
+            ];
+        }
+
         $expense = Expense::create([
             'user_id' => $this->user->id,
             'income_id' => $income->id,
@@ -143,9 +172,30 @@ class AddExpense
         $this->user->total_income -= $amount;
         $this->user->save();
 
+        $this->recordUniqueExpense($name, $amount);
+
         return [
             'message' => 'expense recorded successfully',
             'expense' => $expense
         ];
+    }
+
+    public function recordUniqueExpense($name, $amount)
+    {
+        $uniqueExpense = UniqueExpense::where('user_id', $this->user->id)
+        ->where('name', $name)
+        ->first();
+
+        if(!$uniqueExpense) {
+            $uniqueExpense = UniqueExpense::create([
+                'user_id' => $this->user->id,
+                'name' => $name,
+                'total' => $amount
+            ]);
+        }
+        else {
+            $uniqueExpense->total += $amount;
+            $uniqueExpense->save();
+        }
     }
 }

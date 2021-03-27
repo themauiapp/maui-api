@@ -19,7 +19,7 @@ extend type Mutation @guard {
     resendVerificationEmail(id:ID): Response
 }
 
-extend type Mutation @guard {
+extend type Mutation {
     logout(id:ID!): UserResponse
 }
 
