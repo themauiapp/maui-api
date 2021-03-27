@@ -20,6 +20,10 @@ extend type Query @guard {
     incomes(user_id:Int!): IncomeQuery
 }
 
+extend type Query @guard {
+    stats(id:ID): StatsResponse
+}
+
 type IncomeMutation {
     message:String
     income:Income
@@ -28,4 +32,12 @@ type IncomeMutation {
 
 type IncomeQuery {
     incomes:[Income!]!
+}
+
+type StatsResponse {
+    income_total: Float
+    income_spent: Float
+    income_remainder: Float
+    top_expense_items: [String]
+    top_expense_amounts: [Float]
 }
