@@ -75,7 +75,8 @@ class AddExpense
 
             return [
                 'message' => 'expense recorded successfully',
-                'expense' => $expense
+                'expense' => $expense,
+                'sum' => $this->getDaySum()
             ];
         }
 
@@ -95,7 +96,8 @@ class AddExpense
 
         return [
             'message' => 'expense recorded successfully',
-            'expense' => $expense
+            'expense' => $expense,
+            'sum' => $this->getDaySum()
         ];
     }
 
@@ -116,7 +118,9 @@ class AddExpense
             ];
         }
 
-        if(date('d', $date) > date('d')) {
+        if(date('Y', $date) === date('Y') &&
+        date('m', $date) === date('m') &&
+        date('d', $date) > date('d')) {
             return [
                 'message' => 'cannot add income for days ahead',
                 'errorId' => 'InvalidDate'
@@ -154,7 +158,8 @@ class AddExpense
 
             return [
                 'message' => 'expense recorded successfully',
-                'expense' => $expense
+                'expense' => $expense,
+                'sum' => $this->getDaySum($date)
             ];
         }
 
@@ -176,8 +181,17 @@ class AddExpense
 
         return [
             'message' => 'expense recorded successfully',
-            'expense' => $expense
+            'expense' => $expense,
+            'sum' => $this->getDaySum($date)
         ];
+    }
+
+    public function getDaySum($date = NULL) {
+        $date = date('Y-m-d', $date) ?? date('Y-m-d');
+        return Expense::where('user_id', $this->user->id)
+        ->where('created_at', '>=', $date.' '.'00:00:00')
+        ->where('created_at', '<=', $date.' '.'23:59:59')
+        ->sum('amount');
     }
 
     public function recordUniqueExpense($name, $amount)
