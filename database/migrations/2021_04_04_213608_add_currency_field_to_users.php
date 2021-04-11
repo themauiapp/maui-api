@@ -14,7 +14,7 @@ class AddCurrencyFieldToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('currency')->after('avatar');
+            $table->string('currency')->after('avatar')->nullable()->default(NULL);
         });
     }
 

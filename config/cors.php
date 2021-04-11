@@ -17,13 +17,13 @@ return [
 
     'paths' => ['api/*', 'graphql' , 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['GET, POST, OPTIONS'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://localhost:3000'],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['Content-Type, Accepts, Authorization, X-XSRF-TOKEN, X-CSRF-TOKEN'],
 
     'exposed_headers' => [],
 

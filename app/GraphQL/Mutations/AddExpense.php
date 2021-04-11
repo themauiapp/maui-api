@@ -187,7 +187,7 @@ class AddExpense
     }
 
     public function getDaySum($date = NULL) {
-        $date = date('Y-m-d', $date) ?? date('Y-m-d');
+        $date = $date ? date('Y-m-d', $date) : date('Y-m-d');
         return Expense::where('user_id', $this->user->id)
         ->where('created_at', '>=', $date.' '.'00:00:00')
         ->where('created_at', '<=', $date.' '.'23:59:59')
