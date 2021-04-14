@@ -25,6 +25,15 @@ class Signup
             ];
         }
 
+        $user = User::firstWhere('email', $args['email']);
+
+        if($user) {
+            return [
+                'message' => 'user with email exists',
+                'errorId' => 'UserExistsAlready'
+            ];
+        }
+
         $user = User::create([
             'first_name' => $args['first_name'],
             'last_name' => $args['last_name'],
@@ -35,7 +44,7 @@ class Signup
 
         Auth::login($user, true);
 
-        event(new Registered($user));
+        // event(new Registered($user));
 
         return [
             'message' => 'user created successfully',
