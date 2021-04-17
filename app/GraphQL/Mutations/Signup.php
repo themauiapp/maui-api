@@ -44,7 +44,7 @@ class Signup
 
         Auth::login($user, true);
 
-        // event(new Registered($user));
+        event(new Registered($user));
 
         return [
             'message' => 'user created successfully',

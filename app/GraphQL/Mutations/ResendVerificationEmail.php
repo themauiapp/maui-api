@@ -20,7 +20,7 @@ class ResendVerificationEmail
 
     public function __invoke($_, array $args)
     {
-        $this->request->user->sendEmailVerificationNotification();
+        $this->request->user()->sendEmailVerificationNotification();
         return [
             'message' => 'verification email resent'
         ];
