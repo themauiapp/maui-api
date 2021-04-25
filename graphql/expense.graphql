@@ -9,15 +9,15 @@ type Expense {
 }
 
 extend type Mutation @guard {
-    addExpense(name:String!, amount:Float!, date:String): ExpenseMutation
+    addExpense(name:String!, amount:Float!, date:String): ExpenseAction
 }
 
 extend type Mutation @guard {
-    updateExpense(id:ID!, name:String, amount:Float): ExpenseMutation
+    updateExpense(id:ID!, name:String, amount:Float): ExpenseAction
 }
 
 extend type Mutation @guard {
-    deleteExpense(id:ID!): ExpenseMutation
+    deleteExpense(id:ID!): ExpenseAction
 }
 
 extend type Query @guard {
@@ -25,34 +25,38 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    dailyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
+    dailyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): Expenses
 }
 
 extend type Query @guard {
-    weeklyExpenses(number:Int, page:Int, days:Int , date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): ExpenseQuery
+    weeklyExpenses(number:Int, page:Int, days:Int , date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): Expenses
 }
 
 extend type Query @guard {
-    incomeExpenses(income_id:Int!, number:Int, page:Int, all:Boolean): ExpenseQuery
+    incomeExpenses(income_id:Int!, number:Int, page:Int, all:Boolean): Expenses
 }
 
 extend type Query @guard {
-    searchExpenses(searchTerm:String!, number:Int, page:Int, all:Boolean): ExpenseQuery
+    searchExpenses(searchTerm:String!, number:Int, page:Int, all:Boolean): Expenses
 }
 
 extend type Query @guard {
     compareWeekExpenses(weekOne:String! @rules(apply: ["date_format:Y-m-d"]), weekTwo:String! @rules(apply: ["date_format:Y-m-d"])): CompareWeekExpenses
 }
 
-type ExpenseMutation {
+extend type Query @guard {
+    topExpenses(id: ID): JSON
+}
+
+type ExpenseAction {
     message:String
     expense:Expense
     sum:Float
     errorId:String
 }
 
-type ExpenseQuery {
-    expenses:[Expense!]
+type Expenses {
+    expenses:[Expense!]!
     sum:Float,
     pagination:Pagination
     message:String

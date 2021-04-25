@@ -9,35 +9,37 @@ type Income {
 }
 
 extend type Mutation @guard {
-    addIncome(income:Float!): IncomeMutation
+    addIncome(income:Float!): IncomeAction
 }
 
 extend type Mutation @guard {
-    updateIncome(income:Float!): IncomeMutation
+    updateIncome(income:Float!): IncomeAction
 }
 
 extend type Query @guard {
-    incomes(user_id:Int!): IncomeQuery
+    incomes(user_id:Int!): Incomes
 }
 
 extend type Query @guard {
-    stats(id:ID): StatsResponse
+    incomeStats(id:ID): IncomeStats
 }
 
-type IncomeMutation {
+extend type Query @guard {
+    currentMonthIncome(id:ID): Income
+}
+
+type Incomes {
+    incomes: [Income!]!
+}
+
+type IncomeAction {
     message:String
     income:Income
     errorId:String
 }
 
-type IncomeQuery {
-    incomes:[Income!]!
-}
-
-type StatsResponse {
+type IncomeStats {
     income_total: Float
     income_spent: Float
     income_remainder: Float
-    top_expense_items: [String]
-    top_expense_amounts: [Float]
 }
