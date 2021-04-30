@@ -4,8 +4,9 @@ type Expense {
     income:Income @belongsTo
     name:String
     amount:Float
-    created_at:DateTime
-    updated_at:DateTime
+    time:String
+    created_at: DateTime
+    updated_at: DateTime
 }
 
 extend type Mutation @guard {

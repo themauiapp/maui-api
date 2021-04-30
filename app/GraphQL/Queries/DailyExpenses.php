@@ -33,7 +33,7 @@ class DailyExpenses
             $expenses = Expense::where('user_id', $user->id)
             ->where('created_at', '>=', $date.' '.'00:00:00')
             ->where('created_at', '<=', $date.' '.'23:59:59')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
             return [
@@ -49,7 +49,7 @@ class DailyExpenses
         $expenses = Expense::where('user_id', $user->id)
         ->where('created_at', '>=', $date.' '.'00:00:00')
         ->where('created_at', '<=', $date.' '.'23:59:59')
-        ->orderBy('created_at', 'desc')
+        ->orderBy('created_at', 'asc')
         ->skip($skip)
         ->take($number)
         ->get();
