@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Models\Income;
 use App\Models\Expense;
+use App\Models\Period;
 
 class IncomeExpenses
 {
@@ -24,30 +25,45 @@ class IncomeExpenses
     public function __invoke($_, array $args)
     {
         $user = $this->request->user();
-        $income_id = $args['income_id'];
+        $date = strtotime($args['date']);
+        $month = date("n", $date);
+        $year = date("y", $date);
 
-        try {
-            $income = Income::findOrFail($income_id);
-        }
-        catch(ModelNotFoundException $e) {
+        $period = Period::where('month', $month)
+        ->where('year', $year)
+        ->first();
+
+        if(!$period) {
             return [
-                'message' => 'income does not exist',
-                'errorId' => 'IncomeDoesNotExist'
+                'expenses' => [],
+                'sum' => 0,
+                'pagination' => [
+                    'currentPage' => 0,
+                    'maxPages' => 0
+                ]
             ];
         }
 
-        if($income->user->id !== $user->id) {
+        $income = Income::where('user_id', $user->id)
+        ->where('period_id', $period->id)
+        ->first();
+
+        if(!$income) {
             return [
-                'message' => 'you do not have permission',
-                'errorId' => 'Unauthorized'
+                'expenses' => [],
+                'sum' => 0,
+                'pagination' => [
+                    'currentPage' => 0,
+                    'maxPages' => 0
+                ]
             ];
         }
 
-        $sum = Expense::where('income_id', $income_id)
+        $sum = Expense::where('income_id', $income->id)
         ->sum('amount');
 
         if(array_key_exists('all', $args) && $args['all']) {
-            $expenses = Expense::where('income_id', $income_id)
+            $expenses = Expense::where('income_id', $income->id)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -61,13 +77,13 @@ class IncomeExpenses
         $number = $args['number'] ?? 1;
         $skip = ($page - 1) * $number;
 
-        $expenses = Expense::where('income_id', $income_id)
+        $expenses = Expense::where('income_id', $income->id)
         ->orderBy('created_at', 'desc')
         ->skip($skip)
         ->take($number)
         ->get();
 
-        $totalExpenses = Expense::where('income_id', $income_id)
+        $totalExpenses = Expense::where('income_id', $income->id)
         ->count();
 
         $maxPages = ceil($totalExpenses / $number);

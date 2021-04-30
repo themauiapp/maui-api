@@ -34,7 +34,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    incomeExpenses(income_id:Int!, number:Int, page:Int, all:Boolean): Expenses
+    incomeExpenses(number:Int, page:Int, date: String! @rules(apply:["date_format:Y-m-d"]) all:Boolean): Expenses
 }
 
 extend type Query @guard {
