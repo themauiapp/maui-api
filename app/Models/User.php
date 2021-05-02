@@ -12,7 +12,6 @@ use App\Notifications\VerifyResetEmailNotification;
 use App\Notifications\ChangeEmailNotification;
 use App\Notifications\EmailChangedNotification;
 use App\Models\Income;
-
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -42,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'name',
+        'name','latest_income_period'
     ];
 
     /**
@@ -58,6 +57,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getNameAttribute()
     {
         return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getLatestIncomePeriodAttribute() 
+    {
+        $income = Income::where('user_id', $this->id)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+        if(!$income) {
+            return NULL;
+        }
+
+        $period = $income->period;
+        return "{$period->month} {$period->year}";
     }
 
     public function sendPasswordResetNotification($token)

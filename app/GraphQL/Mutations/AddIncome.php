@@ -27,6 +27,10 @@ class AddIncome
         $month = date('n');
         $year = date('Y');
 
+        if(array_key_exists('currency', $args)) {
+            $user->currency = $args['currency'];
+        }
+
         $period = Period::firstOrCreate([
             'month' => $month,
             'year' => $year

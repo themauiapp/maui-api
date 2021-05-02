@@ -6,6 +6,8 @@ type User {
     avatar:String
     total_income:Float
     timezone:String
+    currency: String
+    latest_income_period: String
     created_at:DateTime
     updated_at:DateTime
 }

@@ -45,11 +45,16 @@ class ExpenseStats
         ->orderBy('created_at', 'desc')
         ->first();
 
+        $count = Expense::where('user_id', $user->id)
+        ->where('name', $name)
+        ->count();
+
         return [
             'name' => $name,
             'total' => $uniqueExpense->total,
             'first_recorded' => $firstRecordedExpense->created_at,
-            'last_recorded' => $lastRecordedExpense->created_at
+            'last_recorded' => $lastRecordedExpense->created_at,
+            'times_recorded' => $count
         ];
     }
 }

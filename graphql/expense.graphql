@@ -69,6 +69,7 @@ type ExpenseStats {
     total: Float
     first_recorded: DateTime
     last_recorded: DateTime
+    times_recorded: Int
     errorId: String
     message: String
 }

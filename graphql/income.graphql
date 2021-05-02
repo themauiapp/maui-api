@@ -9,7 +9,7 @@ type Income {
 }
 
 extend type Mutation @guard {
-    addIncome(income:Float!): IncomeAction
+    addIncome(income:Float!, currency:String): IncomeAction
 }
 
 extend type Mutation @guard {
