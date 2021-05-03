@@ -4,6 +4,7 @@ namespace App\GraphQL\Queries;
 
 use Illuminate\Http\Request;
 use App\Models\Expense;
+use App\Models\Income;
 use App\Models\UniqueExpense;
 
 class ExpenseStats
@@ -36,6 +37,13 @@ class ExpenseStats
             ];
         }
 
+        $income_total = Income::where('user_id', $user->id)
+        ->sum('total');
+
+        $income_spent = $income_total - $user->total_income;
+        
+        $percent_of_expenses = number_format(($uniqueExpense->total / $income_spent) * 100, 2, '.', '') . '%';
+
         $firstRecordedExpense = Expense::where('user_id', $user->id)
         ->where('name', $name)
         ->first();
@@ -51,10 +59,11 @@ class ExpenseStats
 
         return [
             'name' => $name,
-            'total' => $uniqueExpense->total,
+            'total' => number_format($uniqueExpense->total),
             'first_recorded' => $firstRecordedExpense->created_at,
             'last_recorded' => $lastRecordedExpense->created_at,
-            'times_recorded' => $count
+            'times_recorded' => $count,
+            'percent_of_expenses' => $percent_of_expenses
         ];
     }
 }

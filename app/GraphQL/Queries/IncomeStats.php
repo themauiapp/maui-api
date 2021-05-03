@@ -29,9 +29,9 @@ class IncomeStats
         $income_spent = $income_total - $user->total_income;
 
         return [
-            'income_total' => $income_total,
-            'income_spent' => $income_spent,
-            'income_remainder' => $user->total_income,
+            'income_total' => number_format($income_total),
+            'income_spent' => number_format($income_spent),
+            'income_remainder' => number_format($user->total_income),
         ];
     }
 }

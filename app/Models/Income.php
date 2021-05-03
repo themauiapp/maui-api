@@ -16,6 +16,20 @@ class Income extends Model
 
     protected $fillable = ['user_id', 'period_id', 'total' , 'remainder'];
 
+    protected $appends = ['percent_remainder'];
+
+    public function getTotalAttribute($value) {
+        return number_format($value);
+    }
+
+    public function getRemainderAttribute($value) {
+        return number_format($value);
+    }
+
+    public function getPercentRemainderAttribute() {
+        return number_format(((float)$this->remainder / (float)$this->total) * 100, 2, '.', '') . '%';
+    }
+
     public function user() {
         return $this->belongsTo(User::class);
     }
