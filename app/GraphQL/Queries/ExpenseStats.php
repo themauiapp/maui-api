@@ -60,10 +60,14 @@ class ExpenseStats
         return [
             'name' => $name,
             'total' => number_format($uniqueExpense->total),
-            'first_recorded' => $firstRecordedExpense->created_at,
-            'last_recorded' => $lastRecordedExpense->created_at,
+            'first_recorded' => $this->parseDate($firstRecordedExpense->created_at),
+            'last_recorded' => $this->parseDate($lastRecordedExpense->created_at),
             'times_recorded' => $count,
             'percent_of_expenses' => $percent_of_expenses
         ];
+    }
+
+    public function parseDate($date) {
+        return date('D jS F Y', strtotime($date));
     }
 }

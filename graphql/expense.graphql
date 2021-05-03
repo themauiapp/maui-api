@@ -58,7 +58,7 @@ type ExpenseAction {
 
 type Expenses {
     expenses:[Expense!]!
-    sum:Float,
+    sum:String,
     pagination:Pagination
     message:String
     errorId:String
@@ -67,8 +67,8 @@ type Expenses {
 type ExpenseStats {
     name: String
     total: String
-    first_recorded: DateTime
-    last_recorded: DateTime
+    first_recorded: String
+    last_recorded: String
     times_recorded: Int
     percent_of_expenses: String
     errorId: String

@@ -90,7 +90,7 @@ class IncomeExpenses
 
         return [
             'expenses' => $expenses,
-            'sum' => $sum,
+            'sum' => number_format($sum),
             'pagination' => [
                 'currentPage' => $page,
                 'maxPages' => $maxPages

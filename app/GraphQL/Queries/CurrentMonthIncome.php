@@ -42,6 +42,8 @@ class CurrentMonthIncome
             ];
         }
 
+        $income->total = number_format($income->total);
+        $income->remainder = number_format($income->remainder);
         return $income;
     }
 }
