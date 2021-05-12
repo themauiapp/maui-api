@@ -41,6 +41,7 @@ class CompareWeekExpenses
                 $weekOneEnd = $date;
             }
         }
+        
 
         for($i = 0; $i <= 7; $i++) {
             $date = strtotime($weekTwo) + ($i * 86400);

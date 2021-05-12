@@ -41,7 +41,7 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     protected $appends = [
-        'name','latest_income_period'
+        'name','latest_income'
     ];
 
     /**
@@ -59,18 +59,13 @@ class User extends Authenticatable implements MustVerifyEmail
         return "{$this->first_name} {$this->last_name}";
     }
 
-    public function getLatestIncomePeriodAttribute() 
+    public function getLatestIncomeAttribute() 
     {
         $income = Income::where('user_id', $this->id)
         ->orderBy('created_at', 'desc')
         ->first();
 
-        if(!$income) {
-            return NULL;
-        }
-
-        $period = $income->period;
-        return "{$period->month} {$period->year}";
+        return $income;
     }
 
     public function sendPasswordResetNotification($token)

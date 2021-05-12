@@ -1,16 +1,18 @@
 
 type Expense {
+    id: ID
     user:User @belongsTo
     income:Income @belongsTo
     name:String
     amount:Float
+    amount_str:String
     time:String
     created_at: DateTime
     updated_at: DateTime
 }
 
 extend type Mutation @guard {
-    addExpense(name:String!, amount:Float!, date:String): ExpenseAction
+    addExpense(name:String!, amount:Float!, date:String @rules(apply: ["date_format:Y-m-d"])): ExpenseAction
 }
 
 extend type Mutation @guard {
@@ -42,7 +44,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    compareWeekExpenses(weekOne:String! @rules(apply: ["date_format:Y-m-d"]), weekTwo:String! @rules(apply: ["date_format:Y-m-d"])): CompareWeekExpenses
+    compareWeekExpenses(weekOne:String! @rules(apply: ["date_format:Y-m-d"]), weekTwo:String! @rules(apply: ["date_format:Y-m-d"])): JSON
 }
 
 extend type Query @guard {

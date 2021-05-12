@@ -7,7 +7,7 @@ type User {
     total_income:Float
     timezone:String
     currency: String
-    latest_income_period: String
+    latest_income: Income
     created_at:DateTime
     updated_at:DateTime
 }
