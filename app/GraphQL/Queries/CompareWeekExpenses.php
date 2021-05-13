@@ -23,48 +23,35 @@ class CompareWeekExpenses
     {
         date_default_timezone_set($this->user->timezone);
         
-        $weekOne = $args['weekOne'];
-        $weekTwo = $args['weekTwo'];
-        $weekOneExpenses = [];
-        $weekTwoExpenses = [];
+        $dateOne = $args['dateOne'];
+        $dateTwo = $args['dateTwo'];
+        $weekOne = [];
+        $weekTwo = [];
         $weekOneSum = 0;
         $weekTwoSum = 0;
 
         for($i = 0; $i <= 7; $i++) {
-            $date = strtotime($weekOne) + ($i * 86400);
+            $date = strtotime($dateOne) + ($i * 86400);
             $date = date('Y-m-d', $date);
             $sum = $this->getDateSum($date);
+            $weekOne[$date] = $sum;
             $weekOneSum += $sum;
-            array_push($weekOneExpenses, $sum);
-
-            if($i === 7) {
-                $weekOneEnd = $date;
-            }
         }
         
 
         for($i = 0; $i <= 7; $i++) {
-            $date = strtotime($weekTwo) + ($i * 86400);
+            $date = strtotime($dateTwo) + ($i * 86400);
             $date = date('Y-m-d', $date);
             $sum = $this->getDateSum($date);
+            $weekTwo[$date] = $sum;
             $weekTwoSum += $sum;
-            array_push($weekTwoExpenses, $sum);
-
-            if($i === 7) {
-                $weekTwoEnd = $date;
-            }
         }
 
-        $weeks = [$weekOneExpenses, $weekTwoExpenses];
         $sums = [$weekOneSum, $weekTwoSum];
-        $startDates = [$weekOne, $weekTwo];
-        $endDates = [$weekOneEnd, $weekTwoEnd];
 
         return [
-            'weeks' => $weeks,
+            'weeks' => array($weekOne, $weekTwo),
             'sums' => $sums,
-            'startDates' => $startDates,
-            'endDates' => $endDates
         ];
     }
 
