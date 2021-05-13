@@ -20,7 +20,7 @@ extend type Mutation @guard {
 }
 
 extend type Mutation {
-    logout(id:ID!): UserResponse
+    logout: UserResponse
 }
 
 extend type Mutation {

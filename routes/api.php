@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum', 'signed'])->post('/email/verify/{id}/{hash}',
-function(EmailVerificationRequest $request) {
-    $user = $request->user();
-    date_default_timezone_set($user->timezone);
-    $request->fulfill();
-    return [
-        'message' => 'email verified successfully',
-        'user' => $user
-    ];
-})->name('verification.verify');
+Route::middleware(['auth:sanctum', 'signed'])->group(function() {
+    Route::post('/email/verify/{id}/{hash}', function(EmailVerificationRequest $request) {
+        $user = $request->user();
+        date_default_timezone_set($user->timezone);
+        $request->fulfill();
+        return [
+            'message' => 'email verified successfully',
+            'user' => $user
+        ];
+    })->name('verification.verify');
+
+    Route::post('/logout', function() {
+        Auth::logout();
+        Cookie::queue(Cookie::forget('maui_cookie'));
+        return [
+            'message' => 'logged out successfully'
+        ];
+    });
+});
