@@ -4,6 +4,7 @@ type Income {
     period:Period @belongsTo
     total:String
     remainder:String
+    expenses_count: Int
     percent_remainder:String
     created_at:DateTime
     updated_at:DateTime
@@ -18,7 +19,7 @@ extend type Mutation @guard {
 }
 
 extend type Query @guard {
-    incomes(user_id:Int!): Incomes
+    incomes(page: Int! @rules(apply: ["min:1"]), number: Int! @rules(apply: ["min:1"])): Incomes
 }
 
 extend type Query @guard {
@@ -31,6 +32,7 @@ extend type Query @guard {
 
 type Incomes {
     incomes: [Income!]!
+    pagination: Pagination
 }
 
 type IncomeAction {

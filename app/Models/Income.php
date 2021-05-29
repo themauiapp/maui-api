@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
 use App\Models\Period;
+use App\Models\Expense;
 
 class Income extends Model
 {
@@ -18,6 +19,16 @@ class Income extends Model
 
     protected $appends = ['percent_remainder'];
 
+    protected $withCount = ['expenses'];
+
+    public function getTotalAttribute($value) {
+        return number_format($value);
+    }
+
+    public function getRemainderAttribute($value) {
+        return number_format($value);
+    }
+
     public function getPercentRemainderAttribute() {
         return number_format(((float)$this->remainder / (float)$this->total) * 100, 2, '.', '') . '%';
     }
@@ -28,5 +39,9 @@ class Income extends Model
 
     public function period() {
         return $this->belongsTo(Period::class);
+    }
+
+    public function expenses() {
+        return $this->hasMany(Expense::class);
     }
 }
