@@ -1,0 +1,13 @@
+
+type Avatar {
+    user: User! @belongsTo
+    url: String!
+    public_id: String!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+extend type Mutation @guard {
+    updateAvatar(avatar: Upload! @rules(apply: ["mimes:jpeg,jpg,png","between:1,7000"])): UserAction
+}
+

@@ -4,7 +4,7 @@ type SocialLogin {
 }
 
 extend type Mutation {
-    login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserResponse
+    login(email:String! @rules(apply: ["email"]), password:String! @rules(apply: ["min:8"])): UserAction
 }
 
 extend type Mutation {
@@ -12,7 +12,7 @@ extend type Mutation {
 }
 
 extend type Mutation {
-    verifyGoogleLogin(timezone:String!): UserResponse
+    verifyGoogleLogin(timezone:String!): UserAction
 }
 
 extend type Mutation @guard {
@@ -20,7 +20,7 @@ extend type Mutation @guard {
 }
 
 extend type Mutation {
-    logout: UserResponse
+    logout: UserAction
 }
 
 extend type Mutation {
@@ -45,5 +45,5 @@ extend type Mutation @guard {
 
 extend type Mutation @guard {
     resetEmail(email:String! @rules(apply: ["email"]),
-    token:String! @rules(apply: ["min:50"])): UserResponse
+    token:String! @rules(apply: ["min:50"])): UserAction
 }

@@ -58,6 +58,8 @@ return [
 
     'asset_url' => env('ASSET_URL', null),
 
+    'cloudinary_url' => env('CLOUDINARY_URL'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

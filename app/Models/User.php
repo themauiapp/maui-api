@@ -12,6 +12,7 @@ use App\Notifications\VerifyResetEmailNotification;
 use App\Notifications\ChangeEmailNotification;
 use App\Notifications\EmailChangedNotification;
 use App\Models\Income;
+use App\Models\Avatar;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
@@ -90,5 +91,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function incomes() {
         return $this->hasMany(Income::class);
+    }
+
+    public function avatar() {
+        return $this->hasOne(Avatar::class);
     }
 }
