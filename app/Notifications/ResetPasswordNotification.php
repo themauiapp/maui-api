@@ -19,9 +19,12 @@ class ResetPasswordNotification extends Notification
 
     protected $token;
 
-    public function __construct($token)
+    protected $email;
+
+    public function __construct($token, $email)
     {
         $this->token = $token;
+        $this->email = $email;
     }
 
     /**
@@ -45,7 +48,7 @@ class ResetPasswordNotification extends Notification
     {
         return (new MailMessage)
                     ->subject('Reset your Password')
-                    ->view(['mail.reset', 'mail.reset_txt'], ['token' => $this->token]);
+                    ->view(['mail.reset', 'mail.reset_txt'], ['token' => $this->token, 'email' => $this->email]);
     }
 
     /**
