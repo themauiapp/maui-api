@@ -2,8 +2,8 @@
 type Income {
     user:User @belongsTo
     period:Period @belongsTo
-    total:String
-    remainder:String
+    total:Float
+    remainder:Float
     expenses_count: Int
     percent_remainder:String
     created_at:DateTime
@@ -42,7 +42,7 @@ type IncomeAction {
 }
 
 type IncomeStats {
-    income_total: String
-    income_spent: String
-    income_remainder: String
+    income_total: Float
+    income_spent: Float
+    income_remainder: Float
 }

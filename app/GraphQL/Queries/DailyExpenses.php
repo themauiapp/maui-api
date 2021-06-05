@@ -63,7 +63,7 @@ class DailyExpenses
 
         return [
             'expenses' => $expenses,
-            'sum' => number_format($sum),
+            'sum' => $sum,
             'pagination' => [
                 'currentPage' => $page,
                 'maxPages' => $maxPages

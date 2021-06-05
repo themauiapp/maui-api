@@ -21,14 +21,6 @@ class Income extends Model
 
     protected $withCount = ['expenses'];
 
-    public function getTotalAttribute($value) {
-        return number_format($value);
-    }
-
-    public function getRemainderAttribute($value) {
-        return number_format($value);
-    }
-
     public function getPercentRemainderAttribute() {
         return number_format(((float)$this->remainder / (float)$this->total) * 100, 2, '.', '') . '%';
     }
