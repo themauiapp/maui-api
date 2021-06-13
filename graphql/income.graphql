@@ -27,7 +27,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    currentMonthIncome(id:ID): Income
+    currentMonthIncome: Income
 }
 
 type Incomes {

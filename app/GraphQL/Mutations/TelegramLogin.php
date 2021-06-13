@@ -5,7 +5,7 @@ namespace App\GraphQL\Mutations;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
-class StatelessLogin
+class TelegramLogin
 {
     /**
      * @param  null  $_
