@@ -20,5 +20,6 @@ type UserAction {
     message:String
     user:User
     errorId:String
+    token:String
 }
 

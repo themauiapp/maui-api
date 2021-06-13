@@ -32,7 +32,7 @@ class Login
         }
 
         return [
-            'message' => 'incorrect username or password',
+            'message' => 'incorrect email or password',
             'user' => NULL,
             'errorId' => 'AuthenticationFailed'
         ];
