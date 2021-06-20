@@ -16,16 +16,17 @@ class AddExpense
      * @param  array<string, mixed>  $args
      */
 
+    protected $request;
     protected $user;
 
     public function __construct(Request $request)
     {
-        $this->user = $request->user();
+        $this->request = $request;
     }
-
 
     public function __invoke($_, array $args)
     {
+        $this->user = $this->request->user();
         date_default_timezone_set($this->user->timezone);
 
         $month = date('n');
