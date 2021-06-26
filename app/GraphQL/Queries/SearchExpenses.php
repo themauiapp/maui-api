@@ -26,13 +26,13 @@ class SearchExpenses
         $searchTerm = $args['searchTerm'];
 
         $sum = Expense::where('user_id', $user->id)
-        ->where('name', 'LIKE', "%{$searchTerm}%")
+        ->where('name', $searchTerm)
         ->orderBy('created_at', 'desc')
         ->sum('amount');
 
         if(array_key_exists('all', $args) && $args['all']) {
             $expenses = Expense::where('user_id', $user->id)
-            ->where('name', 'LIKE', "%{$searchTerm}%")
+            ->where('name', $searchTerm)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -47,14 +47,14 @@ class SearchExpenses
         $skip = ($page - 1) * $number;
 
         $expenses = Expense::where('user_id', $user->id)
-        ->where('name', 'LIKE', "%{$searchTerm}%")
+        ->where('name', $searchTerm)
         ->orderBy('created_at', 'desc')
         ->skip($skip)
         ->take($number)
         ->get();
 
         $totalExpenses = Expense::where('user_id', $user->id)
-        ->where('name', 'LIKE', "%{$searchTerm}%")
+        ->where('name', $searchTerm)
         ->count();
 
         $maxPages = ceil($totalExpenses / $number);
