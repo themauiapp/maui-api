@@ -23,7 +23,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    incomeStats(id:ID): IncomeStats
+    incomeStats: IncomeStats
 }
 
 extend type Query @guard {
