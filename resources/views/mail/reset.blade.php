@@ -49,7 +49,7 @@
 						<tr>
 							<td>
 								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}password/reset/{{ $token }}&email={{ $email }}' style='color:#000; font-size:1em;'>
+									<a href='{{ config("app.client_url") }}password/reset/{{ $token }}?email={{ $email }}' style='color:#000; font-size:1em;'>
 										{{ config('app.client_url') }}password/reset
 									</a>									
 								</div>
