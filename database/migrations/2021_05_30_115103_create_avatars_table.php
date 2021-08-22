@@ -20,7 +20,7 @@ class CreateAvatarsTable extends Migration
             ->cascadeOnUpdate()
             ->cascadeOnDelete();
             $table->string('url');
-            $table->string('public_id');
+            $table->string('public_id')->nullable();
             $table->timestamps();
         });
     }

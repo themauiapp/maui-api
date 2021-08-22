@@ -55,8 +55,10 @@ class VerifyGoogleLogin
                     'email' => $providerUser->getEmail(),
                     'email_verified_at' => date('Y-m-d h:i:s'),
                     'password' => Hash::make($password),
-                    'avatar' => $providerUser->getAvatar(),
                     'timezone' => $timezone
+                ]);
+                $user->avatar()->create([
+                    'url' => $providerUser->getAvatar(),
                 ]);
             }
 
