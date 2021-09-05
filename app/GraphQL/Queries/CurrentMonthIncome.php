@@ -24,7 +24,7 @@ class CurrentMonthIncome
         $user = $this->request->user();
         date_default_timezone_set($user->timezone);
         $month = date('n');
-        $year = date('y');
+        $year = date('Y');
 
         $period = Period::firstOrCreate([
             'month' => $month,

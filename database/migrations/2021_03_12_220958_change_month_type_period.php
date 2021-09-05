@@ -25,7 +25,7 @@ class ChangeMonthTypePeriod extends Migration
      */
     public function down()
     {
-        Schema::table('income', function (Blueprint $table) {
+        Schema::table('periods', function (Blueprint $table) {
             $table->string('month')->change();
         });
     }
