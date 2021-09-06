@@ -2,12 +2,13 @@
 
 namespace App\GraphQL\Mutations;
 
-use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
-use App\Models\Avatar;
+use App\Traits\UpdateUserAvatar;
 
 class UpdateAvatar
 {
+    use UpdateUserAvatar;
+
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -23,44 +24,17 @@ class UpdateAvatar
     {
         $user = $this->request->user();
         $avatar = $args['avatar']->getRealPath();
-        $cloudinary = new Cloudinary(config("app.cloudinary_url"));
+        [$updated, $message] = $this->updateUserAvatar($user, $avatar);
 
-        try {
-            $response = $cloudinary->uploadApi()->upload($avatar, array('folder' => 'maui/avatars'));
-        }
-        catch(\Exception $e) {
+        if(!$updated) {
             return [
-                'message' => $e->getMessage(),
-                'errorId' => 'AvatarNotUpdated'
+                'message' => $message,
+                'errorId' => 'AvatarNotUpdated',
             ];
-        }
-        
-        $avatarUrl = $response['secure_url'];
-        $avatarPublicId = $response['public_id'];
-        $userAvatar = Avatar::firstWhere('user_id', $user->id);
-        if($userAvatar) {
-            try {
-                $cloudinary->uploadApi()->destroy($userAvatar->public_id);
-            }
-            catch(\Exception $e) {
-                return [
-                    'message' => $e->getMessage(),
-                    'errorId' => 'AvatarNotUpdated'
-                ];
-            }
-            $userAvatar->url = $avatarUrl;
-            $userAvatar->public_id = $avatarPublicId;
-            $userAvatar->save();
-        }
-        else {
-            $user->avatar()->create([
-                'url' => $avatarUrl,
-                'public_id' => $avatarPublicId
-            ]);
         }
 
         return [
-            'message' => 'avatar updated successfully',
+            'message' => 'Avatar updated successfully',
             'user' => $user->fresh()
         ];
     }
