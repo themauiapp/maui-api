@@ -46,7 +46,7 @@ class VerifyResetEmailNotification extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->subject('Verify your Email Change')
+                    ->subject('Verify Your Email Change')
                     ->view(['mail.verify_reset_email', 'mail.verify_reset_email_txt'], ['name' => $this->name, 'token' => $this->token]);
     }
 

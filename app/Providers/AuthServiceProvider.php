@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
             $url = explode('verify/', $url, 2)[1];
             return (new MailMessage)
             ->view(['mail.verify', 'mail.verify_txt'], ['url' => $url])
-            ->subject('Verify your Email');
+            ->subject('Verify Your Email');
         });
     }
 }

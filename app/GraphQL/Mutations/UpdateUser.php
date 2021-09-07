@@ -2,12 +2,13 @@
 
 namespace App\GraphQL\Mutations;
 
+use App\Traits\UpdateUserAvatar;
 use App\Traits\ValidateTimezone;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 class UpdateUser
 {
-    use ValidateTimezone;
+    use UpdateUserAvatar, ValidateTimezone;
     /**
      * @param  null  $_
      * @param  array<string, mixed>  $args
@@ -34,6 +35,10 @@ class UpdateUser
 
         if(array_key_exists('password', $args)) {
             $args['password'] = Hash::make($args['password']);
+        }
+
+        if(isset($args['avatar'])) {
+            $this->updateUserAvatar($user, $args['avatar']->getRealPath());            
         }
 
         $user->fill($args);

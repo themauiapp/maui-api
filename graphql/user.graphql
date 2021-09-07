@@ -14,7 +14,7 @@ type User {
 }
 
 extend type Mutation @guard {
-    updateUser(first_name:String, last_name:String, timezone:String, password:String @rules(apply: ["min:8"])): UserAction
+    updateUser(first_name:String, last_name:String, timezone:String, password:String @rules(apply: ["min:8", "confirmed"]), password_confirmation:String, avatar:Upload): UserAction
 }
 
 type UserAction {

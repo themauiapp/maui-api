@@ -33,7 +33,7 @@ class SendChangeEmail
         if($userWithEmail) {
             return [
                 'message' => 'user with email exists already',
-                'errorId' => 'InvalidEmailAddress'
+                'errorId' => 'InvalidEmailResetAddress'
             ];
         }
 
@@ -45,7 +45,7 @@ class SendChangeEmail
             EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'invalid email reset token',
-                'errorId' => 'InvalidResetToken'
+                'errorId' => 'InvalidEmailResetToken'
             ];
         }
 
