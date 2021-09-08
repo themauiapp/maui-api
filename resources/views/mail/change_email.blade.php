@@ -49,8 +49,8 @@
 						<tr>
 							<td>
 								<div style='margin:12px 0 2px 0'>
-									<a href='{{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}' style='color:#000; font-size:1em;'>
-										{{ config('app.client_url') }}email/confirm
+									<a href='{{ config("app.client_url") }}email/change/confirm/{{ $token }}?email={{ $email }}' style='color:#000; font-size:1em;'>
+										{{ config('app.client_url') }}email/change/confirm
 									</a>									
 								</div>
 							</td>
@@ -66,7 +66,7 @@
 							<td>
 								<div style='margin-top:12px;'>
                                     <p style='margin:0; color:#000; font-size:1em; text-decoration:none;'>
-                                        {{ config("app.client_url") }}email/confirm/{{ $token }}?email={{ $email }}
+                                        {{ config("app.client_url") }}email/change/confirm/{{ $token }}?email={{ $email }}
                                     </p>
 								</div>
 							</td>

@@ -42,7 +42,7 @@
 							<td>
 								<div style='line-height: 1.7; text-align:justify;'>
 									Hey {{ $name }}. Your email has been changed successfully. From now on {{ $email }} is the email address associated with your 
-                                    {{ config('app.name') }} account. If you have any more updates you would like to make, simply visit the settings page in the Maui app.
+                                    {{ config('app.name') }} account. If you have any more updates you would like to make, simply visit the profile page in the Maui app.
 								</div>
 							</td>
 						</tr>

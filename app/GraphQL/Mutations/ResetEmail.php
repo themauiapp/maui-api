@@ -44,7 +44,7 @@ class ResetEmail
             EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'invalid email reset token',
-                'errorId' => 'InvalidResetToken'
+                'errorId' => 'InvalidEmailResetToken'
             ];
         }
 
@@ -52,7 +52,7 @@ class ResetEmail
             EmailReset::where('user_id', $user->id)->delete();
             return [
                 'message' => 'expired email reset token',
-                'errorId' => 'ExpiredResetToken'
+                'errorId' => 'InvalidEmailResetToken'
             ];
         }
 
