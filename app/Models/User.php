@@ -96,4 +96,8 @@ class User extends Authenticatable implements MustVerifyEmail
     public function avatar() {
         return $this->hasOne(Avatar::class);
     }
+
+    public function telegram() {
+        return $this->hasOne(Telegram::class);
+    }
 }

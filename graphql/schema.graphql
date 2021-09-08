@@ -17,6 +17,7 @@ scalar Upload
 #import income.graphql
 #import expense.graphql
 #import avatar.graphql
+#import telegram.graphql
 
 type Query {
     users: [User!]! @paginate(defaultCount: 10)

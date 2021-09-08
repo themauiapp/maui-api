@@ -7,7 +7,6 @@ type User {
     total_income:Float
     timezone:String
     currency:String
-    telegram_id:String
     latest_income: Income
     created_at:DateTime
     updated_at:DateTime

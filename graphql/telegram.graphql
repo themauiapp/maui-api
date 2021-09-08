@@ -1,0 +1,8 @@
+
+type Telegram {
+    user: User! @belongsTo
+    telegram_id: String
+    notify_12pm: Boolean!
+    notify_6pm: Boolean!
+    notify_10pm: Boolean!
+}
