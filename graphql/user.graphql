@@ -7,6 +7,7 @@ type User {
     total_income:Float
     timezone:String
     currency:String
+    telegram: Telegram @hasOne
     latest_income: Income
     created_at:DateTime
     updated_at:DateTime

@@ -6,3 +6,7 @@ type Telegram {
     notify_6pm: Boolean!
     notify_10pm: Boolean!
 }
+
+extend type Mutation @guard {
+    updateTelegramSettings(notify_12pm: Boolean!, notify_6pm: Boolean!, notify_10pm: Boolean!): Response
+}
