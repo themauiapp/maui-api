@@ -30,18 +30,15 @@ class TelegramLogin
             ];
         }
 
-        if($user->telegram_id) {
-            return [
-                'message' => 'user is already authenticated to telegram',
-                'errorId' => 'AuthenticatedToTelegramAlready'
-            ];
+        if(!$user->telegram) {
+            $user->telegram()->create([
+                'telegram_id' => $args['telegram_id']
+            ]);
         }
 
         $user->tokens()->delete();
         $uniqueToken = bin2hex(openssl_random_pseudo_bytes(64));
         $token = $user->createToken($uniqueToken);
-        $user->telegram_id = $args['telegram_id'];
-        $user->save();
 
         return [
             'message' => 'authenticated successfully',

@@ -1,26 +1,37 @@
 type User {
-    id:ID
-    name:String
-    email:String
-    email_verified_at:DateTime
-    avatar:Avatar @hasOne
-    total_income:Float
-    timezone:String
-    currency:String
+    id: ID
+    name: String
+    email: String
+    email_verified_at: DateTime
+    avatar: Avatar @hasOne
+    total_income: Float
+    timezone: String
+    currency: String
     telegram: Telegram @hasOne
     latest_income: Income
-    created_at:DateTime
-    updated_at:DateTime
+    created_at: DateTime
+    updated_at: DateTime
+}
+
+extend type Query {
+    me: User! @guard @auth
+    usersByTelegramSetting(time: String!): [User!]!
 }
 
 extend type Mutation @guard {
-    updateUser(first_name:String, last_name:String, timezone:String, password:String @rules(apply: ["min:8", "confirmed"]), password_confirmation:String, avatar:Upload): UserAction
+    updateUser(
+        first_name: String
+        last_name: String
+        timezone: String
+        password: String @rules(apply: ["min:8", "confirmed"])
+        password_confirmation: String
+        avatar: Upload
+    ): UserAction
 }
 
 type UserAction {
-    message:String
-    user:User
-    errorId:String
-    token:String
+    message: String
+    user: User
+    errorId: String
+    token: String
 }
-
