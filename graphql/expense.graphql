@@ -1,53 +1,84 @@
-
 type Expense {
     id: ID
-    user:User @belongsTo
-    income:Income @belongsTo
-    name:String
-    amount:Float
-    time:String
+    user: User @belongsTo
+    income: Income @belongsTo
+    name: String
+    amount: Float
+    date: String
+    time: String
     created_at: DateTime
     updated_at: DateTime
 }
 
 extend type Mutation @guard {
-    addExpense(name:String!, amount:Float!, date:String @rules(apply: ["date_format:Y-m-d"])): ExpenseAction
+    addExpense(
+        name: String!
+        amount: Float!
+        date: String @rules(apply: ["date_format:Y-m-d"])
+    ): ExpenseAction
 }
 
 extend type Mutation @guard {
-    updateExpense(id:ID!, name:String, amount:Float): ExpenseAction
+    updateExpense(id: ID!, name: String, amount: Float): ExpenseAction
 }
 
 extend type Mutation @guard {
-    deleteExpense(id:ID!): ExpenseAction
+    deleteExpense(id: ID!): ExpenseAction
 }
 
 extend type Query @guard {
-    expenseStats(name:String!): ExpenseStats
+    expenseStats(name: String!): ExpenseStats
 }
 
 extend type Query @guard {
-    dailyExpenses(number:Int, page:Int, date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): Expenses
+    dailyExpenses(
+        number: Int
+        page: Int
+        date: String! @rules(apply: ["date_format:Y-m-d"])
+        all: Boolean
+    ): Expenses
 }
 
 extend type Query @guard {
-    weeklyExpenses(number:Int, page:Int, days:Int , date:String! @rules(apply: ["date_format:Y-m-d"]), all:Boolean): Expenses
+    weeklyExpenses(
+        number: Int
+        page: Int
+        days: Int
+        date: String! @rules(apply: ["date_format:Y-m-d"])
+        all: Boolean
+    ): Expenses
 }
 
 extend type Query @guard {
-    incomeExpenses(number:Int, page:Int, date: String! @rules(apply:["date_format:Y-m-d"]) all:Boolean): Expenses
+    incomeExpenses(
+        number: Int
+        page: Int
+        date: String! @rules(apply: ["date_format:Y-m-d"])
+        all: Boolean
+    ): Expenses
 }
 
 extend type Query @guard {
-    searchExpenses(searchTerm:String!, number:Int, page:Int, all:Boolean): Expenses
+    searchExpenses(
+        searchTerm: String!
+        number: Int
+        page: Int
+        all: Boolean
+    ): Expenses
 }
 
 extend type Query @guard {
-    compareWeekExpenses(dateOne:String! @rules(apply: ["date_format:Y-m-d"]), dateTwo:String! @rules(apply: ["date_format:Y-m-d"])): JSON
+    compareWeekExpenses(
+        dateOne: String! @rules(apply: ["date_format:Y-m-d"])
+        dateTwo: String! @rules(apply: ["date_format:Y-m-d"])
+    ): JSON
 }
 
 extend type Query @guard {
-    compareMonthExpenses(dateOne: String! @rules(apply:["date_format:Y-m-d"]), dateTwo: String! @rules(apply:["date_format:Y-m-d"])): JSON
+    compareMonthExpenses(
+        dateOne: String! @rules(apply: ["date_format:Y-m-d"])
+        dateTwo: String! @rules(apply: ["date_format:Y-m-d"])
+    ): JSON
 }
 
 extend type Query @guard {
@@ -55,18 +86,18 @@ extend type Query @guard {
 }
 
 type ExpenseAction {
-    message:String
-    expense:Expense
-    sum:Float
-    errorId:String
+    message: String
+    expense: Expense
+    sum: Float
+    errorId: String
 }
 
 type Expenses {
-    expenses:[Expense!]!
-    sum:Float,
-    pagination:Pagination
-    message:String
-    errorId:String
+    expenses: [Expense!]!
+    sum: Float
+    pagination: Pagination
+    message: String
+    errorId: String
 }
 
 type ExpenseStats {
@@ -81,8 +112,8 @@ type ExpenseStats {
 }
 
 type CompareWeekExpenses {
-    weeks:[[Float!]]
-    sums:[Float!]
-    startDates:[String]
-    endDates:[String]
+    weeks: [[Float!]]
+    sums: [Float!]
+    startDates: [String]
+    endDates: [String]
 }

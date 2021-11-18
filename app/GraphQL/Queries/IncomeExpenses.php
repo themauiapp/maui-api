@@ -26,7 +26,7 @@ class IncomeExpenses
     {
         $user = $this->request->user();
         $date = strtotime($args['date']);
-        $month = date("n", $date);
+        $month = date("m", $date);
         $year = date("y", $date);
 
         $period = Period::where('month', $month)

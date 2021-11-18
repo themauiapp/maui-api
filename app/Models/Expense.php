@@ -14,7 +14,11 @@ class Expense extends Model
 
     protected $fillable = ['user_id', 'income_id', 'name', 'amount', 'created_at', 'updated_at'];
 
-    protected $appends = ['time'];
+    protected $appends = ['date', 'time'];
+
+    public function getDateAttribute() {
+        return date("Y/m/d", strtotime($this->created_at));
+    }
 
     public function getTimeAttribute() {
         return date("h:i A", strtotime($this->created_at));
