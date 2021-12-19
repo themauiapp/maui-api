@@ -1,4 +1,3 @@
-
 type Telegram {
     user: User! @belongsTo
     telegram_id: String
@@ -8,5 +7,9 @@ type Telegram {
 }
 
 extend type Mutation @guard {
-    updateTelegramSettings(notify_12pm: Boolean!, notify_6pm: Boolean!, notify_10pm: Boolean!): Response
+    updateTelegramSettings(
+        notify_12pm: Boolean!
+        notify_6pm: Boolean!
+        notify_10pm: Boolean!
+    ): Response
 }

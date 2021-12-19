@@ -21,8 +21,8 @@ class TelegramLogout
     public function __invoke($_, array $args)
     {
         $user = $this->request->user();
+        $user->telegram()->delete();
         $user->currentAccessToken()->delete();
-        $user->telegram_id = NULL;
         $user->save();
         return [
             'message' => 'logged out successfully'
