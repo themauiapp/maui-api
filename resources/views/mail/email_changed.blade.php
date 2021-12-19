@@ -28,7 +28,7 @@
 			<tr>
 				<td>
 					<table width='600px' class='table__main' align="center" cellpadding="0" cellspacing="0" bgcolor="white"
-					style='padding:30px;'>
+					style='padding:30px;line-height: 1.7;'>
 						<tr>
 							<td align='center'>
                             </td>
@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td>
-								<div style='line-height: 1.7; text-align:justify;'>
+								<div>
 									Hey {{ $name }}. Your email has been changed successfully. From now on {{ $email }} is the email address associated with your 
                                     {{ config('app.name') }} account. If you have any more updates you would like to make, simply visit the profile page in the Maui app.
 								</div>

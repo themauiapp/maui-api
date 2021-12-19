@@ -28,7 +28,7 @@
 			<tr>
 				<td>
 					<table width='600px' class='table__main' align="center" cellpadding="0" cellspacing="0" bgcolor="white"
-					style='padding:30px;'>
+					style='padding:30px;line-height: 1.7;'>
 						<tr>
 							<td align='center'>
                             </td>
@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td>
-								<div style='line-height: 1.7; text-align:justify;'>
+								<div>
 									Hey there. A password reset request was made on your account. Click this link to continue the process. 
                                     Note that the link expires in 30 minutes.
 								</div>

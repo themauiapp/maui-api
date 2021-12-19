@@ -28,7 +28,7 @@
 			<tr>
 				<td>
 					<table width='600px' class='table__main' align="center" cellpadding="0" cellspacing="0" bgcolor="white"
-					style='padding:30px;'>
+					style='padding:30px;line-height: 1.7;'>
 						<tr>
 							<td align='center'>
                             </td>
@@ -40,7 +40,7 @@
 						</tr>
 						<tr>
 							<td>
-								<div style='line-height: 1.7; text-align:justify;'>
+								<div>
 									Hello. Welcome to {{ config('app.name') }}, the trusted tool for keeping track of your expenses. One more step to complete
 									your registration. Click the link below to verify your email.
 								</div>
