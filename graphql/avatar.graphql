@@ -1,4 +1,3 @@
-
 type Avatar {
     user: User! @belongsTo
     url: String!
@@ -8,6 +7,7 @@ type Avatar {
 }
 
 extend type Mutation @guard {
-    updateAvatar(avatar: Upload! @rules(apply: ["mimes:jpeg,jpg,png","between:1,7000"])): UserAction
+    updateAvatar(
+        avatar: Upload! @rules(apply: ["mimes:jpeg,jpg,png", "between:1,7000"])
+    ): UserAction
 }
-

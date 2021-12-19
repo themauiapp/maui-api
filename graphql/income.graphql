@@ -1,25 +1,27 @@
-
 type Income {
-    user:User @belongsTo
-    period:Period @belongsTo
-    total:Float
-    remainder:Float
+    user: User @belongsTo
+    period: Period @belongsTo
+    total: Float
+    remainder: Float
     expenses_count: Int
-    percent_remainder:String
-    created_at:DateTime
-    updated_at:DateTime
+    percent_remainder: String
+    created_at: DateTime
+    updated_at: DateTime
 }
 
 extend type Mutation @guard {
-    addIncome(income:Float!, currency:String): IncomeAction
+    addIncome(income: Float!, currency: String): IncomeAction
 }
 
 extend type Mutation @guard {
-    updateIncome(income:Float!): IncomeAction
+    updateIncome(income: Float!): IncomeAction
 }
 
 extend type Query @guard {
-    incomes(page: Int! @rules(apply: ["min:1"]), number: Int! @rules(apply: ["min:1"])): Incomes
+    incomes(
+        page: Int! @rules(apply: ["min:1"])
+        number: Int! @rules(apply: ["min:1"])
+    ): Incomes
 }
 
 extend type Query @guard {
@@ -36,9 +38,9 @@ type Incomes {
 }
 
 type IncomeAction {
-    message:String
-    income:Income
-    errorId:String
+    message: String
+    income: Income
+    errorId: String
 }
 
 type IncomeStats {

@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Cookie;
 
 /*
@@ -26,9 +27,16 @@ Route::middleware(['auth:sanctum', 'signed'])->post('/email/verify/{id}/{hash}',
     ];
 })->name('verification.verify');
 
+Route::get('/cli-tokens/{token}', function($token) {
+    return [
+        'auth-token' => Cache::get($token)
+    ];
+});
+
 Route::post('/logout', function() {
     Auth::logout();
     Cookie::queue(Cookie::forget('maui_cookie'));
+    Cookie::queue(Cookie::forget('maui_token'));
     return [
         'message' => 'logged out successfully' 
     ];
