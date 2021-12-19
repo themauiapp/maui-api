@@ -15,7 +15,7 @@ return [
 
     'stateful' => explode(',', env(
         'SANCTUM_STATEFUL_DOMAINS',
-        'localhost:3000,127.0.0.1:3000,::1,maui.com'
+        'localhost:3000,127.0.0.1:3000,::1,maui.com,mauii.app'
     )),
 
     /*
