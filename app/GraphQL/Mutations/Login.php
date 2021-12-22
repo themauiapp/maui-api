@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 
 class Login
 {
@@ -49,7 +49,10 @@ class Login
         if(!isset($args['cliToken'])) return NULL;
         $uniqueToken = bin2hex(openssl_random_pseudo_bytes(64));
         $token = $user->createToken($uniqueToken);
-        Cache::put($args['cliToken'], $token->plainTextToken, now()->addMinutes(10));
+        DB::table('cli_auth_tokens')->insert([
+            'cli_token' => $args['cliToken'],
+            'auth_token' => $token->plainTextToken
+        ]);
         return $token->plainTextToken;
     }
 }
