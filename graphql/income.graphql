@@ -47,4 +47,5 @@ type IncomeStats {
     income_total: Float
     income_spent: Float
     income_remainder: Float
+    currency: String
 }

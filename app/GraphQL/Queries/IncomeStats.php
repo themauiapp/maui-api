@@ -32,6 +32,7 @@ class IncomeStats
             'income_total' => $income_total,
             'income_spent' => $income_spent,
             'income_remainder' => $user->total_income,
+            'currency' => $user->currency,
         ];
     }
 }
