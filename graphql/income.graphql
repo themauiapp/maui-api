@@ -29,7 +29,7 @@ extend type Query @guard {
 }
 
 extend type Query @guard {
-    currentMonthIncome: Income
+    currentMonthIncome(date: String @rules(apply: ["date_format:Y-m-d"])): Income
 }
 
 type Incomes {

@@ -23,8 +23,9 @@ class CurrentMonthIncome
     {
         $user = $this->request->user();
         date_default_timezone_set($user->timezone);
-        $month = date('n');
-        $year = date('Y');
+        $date = isset($args['date']) ? strtotime($args['date']) : strtotime(date('Y-m-d'));
+        $month = date('n', $date);
+        $year = date('Y', $date);
 
         $period = Period::firstOrCreate([
             'month' => $month,
@@ -34,13 +35,6 @@ class CurrentMonthIncome
         $income = Income::where('user_id', $user->id)
         ->where('period_id', $period->id)
         ->first();
-
-        if(!$income) {
-            return [
-                'message' => 'no income exists for current period',
-                'errorId' => 'PeriodIncomeDoesNotExist'
-            ];
-        }
 
         return $income;
     }
