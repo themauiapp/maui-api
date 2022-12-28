@@ -1,14 +1,17 @@
 FROM php:7.4-fpm
 
-# Set working directory
-WORKDIR /var/www/html/
+USER root
 
-COPY . .
+WORKDIR /var/www
 
-RUN apt-get update && apt-get install -y git curl libzip-dev
+RUN apt-get update && apt-get install -y git curl nginx libzip-dev
 
 # Install PHP dependencies
 RUN docker-php-ext-install pdo pdo_mysql zip
+
+COPY . /var/www
+
+COPY ./nginx.conf /etc/nginx/nginx.conf
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -16,13 +19,25 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Install composer dependencies
 RUN composer install
 
-# Add user for laravel application
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
+# Grant read/write access to the bootstrap and storage folders
+RUN chmod -R 777 /var/www/bootstrap /var/www/storage
 
-# Copy existing application directory permissions
-RUN chown -R www:www /var/www/html
+RUN php artisan optimize
 
-EXPOSE 9000
+RUN php artisan route:clear
 
-CMD ["php-fpm"]
+RUN php artisan route:cache
+
+RUN php artisan config:clear
+
+RUN php artisan config:cache
+
+RUN php artisan view:clear
+
+RUN php artisan view:cache
+
+EXPOSE 80
+
+RUN ["chmod", "+x", "/var/www/run.sh"]
+
+CMD ["sh", "/var/www/run.sh"]
