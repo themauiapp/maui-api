@@ -23,6 +23,7 @@ scalar Upload
 type Query {
     users: [User!]! @paginate(defaultCount: 10)
     user(id: ID @eq): User @find
+    ping: PingResponse
 }
 
 type Mutation {
@@ -39,6 +40,10 @@ type Mutation {
 type Response {
     message: String
     errorId: String
+}
+
+type PingResponse {
+    status: String!
 }
 
 type Pagination {
