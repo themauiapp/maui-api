@@ -48,3 +48,9 @@ Route::post('/logout', function() {
         'message' => 'logged out successfully' 
     ];
 });
+
+Route::post("/ping", function () {
+    return [
+        "status" => "ok"
+    ];
+});
