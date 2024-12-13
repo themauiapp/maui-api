@@ -27,7 +27,7 @@ Route::middleware(['auth:sanctum', 'signed'])->post('/email/verify/{id}/{hash}',
     ];
 })->name('verification.verify');
 
-Route::get('/cli-tokens/{token}', function($token) {
+Route::get('/api/cli-tokens/{token}', function($token) {
     $cliAuthToken = DB::table('cli_auth_tokens')->where('cli_token', $token)->first();
     $authToken = $cliAuthToken ? $cliAuthToken->auth_token : NULL;
 
@@ -40,7 +40,7 @@ Route::get('/cli-tokens/{token}', function($token) {
     ];
 });
 
-Route::post('/logout', function() {
+Route::post('/api/logout', function() {
     Auth::logout();
     Cookie::queue(Cookie::forget('maui_cookie'));
     Cookie::queue(Cookie::forget('maui_token'));
@@ -50,7 +50,16 @@ Route::post('/logout', function() {
 });
 
 Route::post("/ping", function () {
+    $databaseStatus = "healthy";
+
+    try {
+        DB::connection()->getPdo();    
+    }
+    catch (\Exception $exception) {
+        $databaseStatus = "unhealthy";
+    }
+
     return [
-        "status" => "ok"
+        "database" => $databaseStatus
     ];
 });
